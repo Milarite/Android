@@ -1,0 +1,131 @@
+package com.test.votting.vottingtest.Adapters;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.test.votting.vottingtest.HelperCLass;
+import com.test.votting.vottingtest.Moduls.SetGetCandidatesInformations;
+import com.test.votting.vottingtest.Moduls.SetGetMyVotes;
+import com.test.votting.vottingtest.R;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+
+public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<AdapterCandidatesRecyclerview.MyRec> {
+    AlertDialog alertDialog;
+    AlertDialog.Builder builder;
+    LayoutInflater inflater;
+    SetGetMyVotes setGetMyVotes;
+    ArrayList<SetGetCandidatesInformations> arrayList=new ArrayList();
+    public Activity act;
+
+    public AdapterCandidatesRecyclerview(ArrayList<SetGetCandidatesInformations> list, Activity context)
+    {
+        arrayList = list;
+        inflater=LayoutInflater.from(context);
+        act=context;
+    }
+    @Override
+    public AdapterCandidatesRecyclerview.MyRec onCreateViewHolder(ViewGroup parent, int viewType)
+    {
+        View v=  inflater.inflate(R.layout.adapter_candidates_recyclerview,parent,false);
+        MyRec obj=new MyRec(v);
+        return obj;
+
+    }
+    @Override
+    public void onBindViewHolder(final MyRec holder, final int position) {
+        holder.candidateName.setText(arrayList.get(position).getName());
+        holder.candidateCampign.setText(arrayList.get(position).getCampaign());
+        holder.city.setText(arrayList.get(position).getCity());
+        if(arrayList.get(position).getStatusVoted()==0)
+            holder.grantYourVote.setText("Grant Your Vote");
+        else
+            holder.grantYourVote.setText("Voted");
+        holder.grantYourVote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (arrayList.get(position).getStatusVoted()==0) {
+                    builder = new AlertDialog.Builder(act);
+                    builder.setTitle("Revoke vote");
+                    builder.setMessage("Are you sure you want to grant your vote to " + arrayList.get(position).getName());
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+
+
+
+                         //   String candidatesIVoted = HelperCLass.mainContract.getVotedCandidatesAddress("", BigInteger.valueOf(i)).send();
+                            setGetMyVotes = new SetGetMyVotes();
+
+                            try {
+                                HelperCLass.mainContract.Voting("","").send();
+//                                setGetMyVotes.setCity(HelperCLass.mainContract.getVoterCity(candidatesIVoted).send());
+//                                setGetMyVotes.setName(HelperCLass.mainContract.getCandidateName(candidatesIVoted).send());
+//                                setGetMyVotes.setYear(HelperCLass.mainContract.getCandidateYear(candidatesIVoted).send());
+//                                HelperCLass.arrayListMyVotes.add(setGetMyVotes);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Toast.makeText(act, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
+
+
+//                            setGetHistory=new SetGetMyVotes();
+//                            setGetHistory.setCampaign(arrayList.get(position).getCampaign());
+//                            setGetHistory.setCity(arrayList.get(position).getCity());
+//                            setGetHistory.setName(arrayList.get(position).getName());
+//                            setGetHistory.setNationalID(arrayList.get(position).getCandidateNationalID());
+//                            setGetHistory.setPic(arrayList.get(position).getPic());
+//                         //   setGetHistory.setStatus(1);
+//                            setGetHistory.setYear(arrayList.get(position).getYear());
+//                            HelperCLass.arrayListMyVotes.add(setGetHistory);
+//                            arrayList.get(position).setStatusVoted(1);
+//                            notifyDataSetChanged();
+//                            alertDialog.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            alertDialog.dismiss();
+                        }
+                    });
+                    alertDialog = builder.create();
+                    alertDialog.show();
+                }
+            }
+        });
+    }
+
+
+
+    @Override
+    public int getItemCount() {
+        return arrayList.size();
+    }
+    class MyRec extends RecyclerView.ViewHolder
+    {
+        TextView candidateName,candidateCampign,city,grantYourVote;
+        ImageView candidateImage;
+        public MyRec(View v) {
+            super(v);
+            candidateName=(TextView)v.findViewById(R.id.candidateName);
+            candidateCampign=(TextView)v.findViewById(R.id.candidateCampign);
+            city=(TextView)v.findViewById(R.id.city);
+            grantYourVote=(TextView)v.findViewById(R.id.grantYourVote);
+
+            candidateImage=(ImageView)v.findViewById(R.id.candidateImage);
+
+        }
+    }
+}
