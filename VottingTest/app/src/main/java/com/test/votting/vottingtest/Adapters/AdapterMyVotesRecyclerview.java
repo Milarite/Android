@@ -3,14 +3,18 @@ package com.test.votting.vottingtest.Adapters;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.test.votting.vottingtest.HelperCLass;
+import com.test.votting.vottingtest.Main2Activity;
 import com.test.votting.vottingtest.Moduls.SetGetMyVotes;
 import com.test.votting.vottingtest.R;
 
@@ -22,13 +26,17 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
     AlertDialog.Builder builder;
     LayoutInflater inflater;
     ArrayList<SetGetMyVotes> arrayList=new ArrayList();
+    HelperCLass helperCLass;
     public Activity act;
+    int publicPosition;
 
     public AdapterMyVotesRecyclerview(ArrayList<SetGetMyVotes> list, Activity context)
     {
         arrayList = list;
         inflater=LayoutInflater.from(context);
         act=context;
+        helperCLass=new HelperCLass(act);
+
     }
     @Override
     public AdapterMyVotesRecyclerview.MyRec onCreateViewHolder(ViewGroup parent, int viewType)
@@ -56,18 +64,10 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
+                        publicPosition=position;
+                        LongOperation longOperation=new LongOperation();
+                        longOperation.execute("");
 
-                        for(int i=0;i<HelperCLass.arrayList.size();i++)
-                        {
-
-                                if (HelperCLass.arrayList !=null && HelperCLass.arrayList.get(i).getCandidateNationalID()==(arrayList.get(position).getNationalID())) {
-                                    HelperCLass.arrayList.get(i).setStatusVoted(0);
-                                    arrayList.remove(position);
-                                    notifyDataSetChanged();
-                                    alertDialog.dismiss();
-                                    break;
-                                }
-                        }
 
                     }
                 });
@@ -110,4 +110,27 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
 
         }
     }
+
+    class LongOperation extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Toast.makeText(act, "Done", Toast.LENGTH_SHORT).show();
+            arrayList.remove(publicPosition);
+            notifyDataSetChanged();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            try {
+                HelperCLass.mainContract.revokeMyVote(helperCLass.getSharedPreferences().getString("MyAddress",""),arrayList.get(publicPosition).getNationalID()).send();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
 }
+    }

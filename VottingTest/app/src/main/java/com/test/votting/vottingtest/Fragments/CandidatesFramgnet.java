@@ -4,6 +4,7 @@ package com.test.votting.vottingtest.Fragments;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -27,6 +28,8 @@ import java.util.UUID;
  * A simple {@link Fragment} subclass.
  */
 public class CandidatesFramgnet extends Fragment {
+    SwipeRefreshLayout swipeContainer;
+    LongOperation longOperation;
     RecyclerView candidateRecyclerview;
     int candidateLength=0;
     SetGetCandidatesInformations setGetCandidatesInformations;
@@ -41,6 +44,11 @@ public class CandidatesFramgnet extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_candidates_framgnet, container, false);
+        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
         candidateRecyclerview=(RecyclerView)v.findViewById(R.id.candidateRecyclerview);
         gridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         adapterCandidatesRecyclerview=new AdapterCandidatesRecyclerview(HelperCLass.arrayList,getActivity());
@@ -48,9 +56,19 @@ public class CandidatesFramgnet extends Fragment {
         candidateRecyclerview.setLayoutManager(gridLayoutManager);
 
         if(HelperCLass.arrayList.isEmpty()) {
-            LongOperation longOperation = new LongOperation();
+             longOperation = new LongOperation();
             longOperation.execute("");
         }
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                // longOperation = new LongOperation();
+
+                longOperation.execute("");
+            }
+        });
         //adapterCandidatesRecyclerview.notifyDataSetChanged();
 //
 //        if(HelperCLass.arrayList.isEmpty())
@@ -58,68 +76,19 @@ public class CandidatesFramgnet extends Fragment {
 
         return v;
     }
-    public void getCandidates()  {
-    //    Toast.makeText(getActivity(), "Accessed", Toast.LENGTH_SHORT).show();
-        if(!HelperCLass.arrayList.isEmpty() && HelperCLass.arrayList !=null)
-            HelperCLass.  arrayList.clear();
 
-
-
-//        setGetCandidatesInformations=new SetGetCandidatesInformations();
-//        setGetCandidatesInformations.setName("Rajai Abu-Saqer");
-//        setGetCandidatesInformations.setCandidateNationalID("999");
-//        setGetCandidatesInformations.setCity("AMMAN");
-//        setGetCandidatesInformations.setYear("2018");
-//        setGetCandidatesInformations.setStatusVoted(0);
-//        setGetCandidatesInformations.setCampaign("خير الناس انفعهم للناس ، الوطن للجميع والجميع للوطن ، القضية الفلسطينية اولوية ،وباسمكم نتكلم ومن اجلكم نعمل ، بصوتك يبدأ التغيير");
-//        HelperCLass.  arrayList.add(setGetCandidatesInformations);
-//
-//
-//        setGetCandidatesInformations=new SetGetCandidatesInformations();
-//        setGetCandidatesInformations.setName("Yousef Baydoun");
-//        setGetCandidatesInformations.setCandidateNationalID("888");
-//        setGetCandidatesInformations.setYear("2018");
-//        setGetCandidatesInformations.setCity("IRBID");
-//        setGetCandidatesInformations.setStatusVoted(0);
-//        setGetCandidatesInformations.setCampaign(" قادمون للتجديد ، الاردن بحاجة للتجديد ، قادمون للتجديد فكونوا عونا لنا");
-//        HelperCLass. arrayList.add(setGetCandidatesInformations);
-//
-//
-//
-//        setGetCandidatesInformations=new SetGetCandidatesInformations();
-//        setGetCandidatesInformations.setName("Moath Animation");
-//        setGetCandidatesInformations.setCandidateNationalID("777");
-//        setGetCandidatesInformations.setYear("2018");
-//        setGetCandidatesInformations.setCity("ZARQA");
-//        setGetCandidatesInformations.setStatusVoted(0);
-//        setGetCandidatesInformations.setCampaign("امن الاردن خط احمر ،محاربة الفساد واجب وطني");
-//        HelperCLass. arrayList.add(setGetCandidatesInformations);
-//
-//
-//        setGetCandidatesInformations=new SetGetCandidatesInformations();
-//        setGetCandidatesInformations.setName("Yaqeen Mohammad");
-//        setGetCandidatesInformations.setCandidateNationalID("666");
-//        setGetCandidatesInformations.setYear("2018");
-//        setGetCandidatesInformations.setCity("SALT");
-//        setGetCandidatesInformations.setStatusVoted(0);
-//        setGetCandidatesInformations.setCampaign("التعليم والتأمين حق للجميع ، معكم نصنع التغير وبصوت الجميع نحقق الهد ");
-//        HelperCLass.  arrayList.add(setGetCandidatesInformations);
-    }
 
     class LongOperation extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
+            if(HelperCLass.arrayList !=null)
+                HelperCLass.arrayList.clear();
 
             try {
                 String nationalID;
-//        int XX;
-                try {
-                    candidateLength=Integer.parseInt(String.valueOf(HelperCLass.candidates.getNationalIDArrayLength().send()));
-                    Log.d("candidateLength", HelperCLass.candidates.getNationalIDArrayLength().send().toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
+                candidateLength=Integer.parseInt(String.valueOf(HelperCLass.candidates.getNationalIDArrayLength().send()));
 
                 for(int i=0;i<candidateLength;i++)
                 {
@@ -148,7 +117,6 @@ public class CandidatesFramgnet extends Fragment {
                 }
                 // lazem afaker esh el eshii ele bzbot 3la HashMap
 
-//                adapterCandidatesRecyclerview.notifyDataSetChanged();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -158,6 +126,14 @@ public class CandidatesFramgnet extends Fragment {
             return null;
         }
 
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            adapterCandidatesRecyclerview.notifyDataSetChanged();
+            if(swipeContainer.isRefreshing())
+                swipeContainer.setRefreshing(false);
+
+        }
     }
 
 }

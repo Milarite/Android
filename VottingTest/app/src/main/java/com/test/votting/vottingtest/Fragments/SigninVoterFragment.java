@@ -15,18 +15,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.test.votting.vottingtest.CreatePrivateAndPublicKeys;
 import com.test.votting.vottingtest.HelperCLass;
-import com.test.votting.vottingtest.LoginActivity;
 import com.test.votting.vottingtest.Main2Activity;
 import com.test.votting.vottingtest.R;
-
-import org.json.JSONObject;
-import org.web3j.crypto.Credentials;
-import org.web3j.tx.Contract;
-import org.web3j.tx.ManagedTransaction;
-
-import java.util.UUID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +28,8 @@ public class SigninVoterFragment extends Fragment {
     HelperCLass helperCLass;
     SharedPreferences.Editor editor;
     TextView signin;
+    boolean singInStatus;
+    ProgressDialog progressDialog;
     public SigninVoterFragment() {
         // Required empty public constructor
     }
@@ -80,7 +73,8 @@ public class SigninVoterFragment extends Fragment {
         else if(password.getText().toString().isEmpty())
             Toast.makeText(getActivity(), "Password is required", Toast.LENGTH_SHORT).show();
         else {
-
+            progressDialog=helperCLass.getProgress("Signin","Please wait");
+            progressDialog.show();
             LongOperation longOperation=new LongOperation();
             longOperation.execute("");
 
@@ -92,27 +86,38 @@ public class SigninVoterFragment extends Fragment {
     class LongOperation extends AsyncTask<String, Void, String> {
 
         @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if(singInStatus==false)
+            {
+                Toast.makeText(getActivity(), "Login failed", Toast.LENGTH_SHORT).show();
+
+            }
+            progressDialog.dismiss();
+
+        }
+
+        @Override
         protected String doInBackground(String... params) {
 
             try {
 
 
-                if( HelperCLass.voters.checkIdAndPassword(nationalID.getText().toString(),password.getText().toString()).send().equals(""))
+                if( HelperCLass.voters.checkIdAndPassword(nationalID.getText().toString(),password.getText().toString()).send().equals("0"))
                 {
-                    Toast.makeText(getActivity(), "Login failed", Toast.LENGTH_SHORT).show();
+                    singInStatus=false;
                 }
                 else
                 {
+                    singInStatus=true;
+
                     editor=helperCLass.getEditor();
                     editor.putString("nationalID",nationalID.getText().toString());
                  //   String result[]=HelperCLass.voters.checkIdAndPassword(nationalID.getText().toString(),password.getText().toString()).send().split("//");
 //                    editor.putString("MyPrivate",result[0]);
 //                    editor.putString("MyAddress",result[1]);
                     editor.putString("MyAddress",HelperCLass.voters.checkIdAndPassword(nationalID.getText().toString(),password.getText().toString()).send());
-
                     editor.commit();
-                 //   HelperCLass.credentials = Credentials.create(result[0]);
-                    Log.d("MyAddress",helperCLass.getSharedPreferences().getString("MyAddress",""));
                     startActivity(new Intent(getActivity(), Main2Activity.class));
                     getActivity().finish();
                 }

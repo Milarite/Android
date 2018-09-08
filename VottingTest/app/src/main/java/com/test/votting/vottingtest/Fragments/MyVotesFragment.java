@@ -1,10 +1,13 @@
 package com.test.votting.vottingtest.Fragments;
 
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,20 +26,16 @@ import java.math.BigInteger;
  */
 public class MyVotesFragment extends Fragment {
 
-
+     SwipeRefreshLayout swipeContainer;
+    LongOperation longOperation;
     int myVotesLength=0;
     RecyclerView histotyRecyclerview;
     SetGetMyVotes setGetMyVotes;
     AdapterMyVotesRecyclerview adapterHistoryRecyclerview;
     StaggeredGridLayoutManager gridLayoutManager;
-    HelperCLass helperCLass=new HelperCLass(getActivity());
+    HelperCLass helperCLass;
     public MyVotesFragment() {
-        try {
-            myVotesLength= Integer.parseInt(String.valueOf(HelperCLass.mainContract.getNationalIDArrayLength("").send()));
-        } catch (Exception e) {
-            e.printStackTrace();
-//            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+
 //        HelperCLass.voters.getNationalIDArrayLength();
 //        HelperCLass.candidates.getCandidateNumberOfVotes(helperCLass.getSharedPreferences().getString("nationalID",""));
         // Required empty public constructor
@@ -48,36 +47,87 @@ public class MyVotesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_my_votes, container, false);
+        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        helperCLass=new HelperCLass(getActivity());
         histotyRecyclerview=(RecyclerView)v.findViewById(R.id.histotyRecyclerview);
         gridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         adapterHistoryRecyclerview=new AdapterMyVotesRecyclerview(HelperCLass.arrayListMyVotes,getActivity());
         histotyRecyclerview.setAdapter(adapterHistoryRecyclerview);
         histotyRecyclerview.setLayoutManager(gridLayoutManager);
 
-        getMyVotesList();
+      //  if(HelperCLass.arrayListMyVotes.isEmpty()) {
+             longOperation = new LongOperation();
+            longOperation.execute("");
+       // }
+
+
+
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                // longOperation = new LongOperation();
+
+                longOperation.execute("");
+            }
+        });
         return v;
     }
 
-    public void getMyVotesList()
-    {
-        try {
 
 
-            for (int i = 0; i < myVotesLength; i++) {
-                String candidatesIVoted = HelperCLass.mainContract.getVotedCandidatesAddress("", BigInteger.valueOf(i)).send();
-                setGetMyVotes = new SetGetMyVotes();
 
-                setGetMyVotes.setCity(HelperCLass.mainContract.getVoterCity(candidatesIVoted).send());
-                setGetMyVotes.setName(HelperCLass.mainContract.getCandidateName(candidatesIVoted).send());
-                setGetMyVotes.setYear(HelperCLass.mainContract.getCandidateYear(candidatesIVoted).send());
-                HelperCLass.arrayListMyVotes.add(setGetMyVotes);
+
+
+
+
+
+
+
+    class LongOperation extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            if(HelperCLass.arrayListMyVotes !=null)
+                HelperCLass.arrayListMyVotes.clear();
+
+            try {
+
+                myVotesLength= Integer.parseInt(String.valueOf(HelperCLass.mainContract.getNationalIDArrayLength(
+                        helperCLass.getSharedPreferences().getString("MyAddress","")).send()));
+                for (int i = 0; i < myVotesLength; i++) {
+                    String candidatesIVoted = HelperCLass.mainContract.getVotedCandidatesAddress(
+                            helperCLass.getSharedPreferences().getString("MyAddress",""),i).send();
+                    setGetMyVotes = new SetGetMyVotes();
+
+                    setGetMyVotes.setCity(HelperCLass.mainContract.getVoterCity(candidatesIVoted).send());
+                    setGetMyVotes.setName(HelperCLass.mainContract.getCandidateName(candidatesIVoted).send());
+                    setGetMyVotes.setYear(HelperCLass.mainContract.getCandidateYear(candidatesIVoted).send());
+                    setGetMyVotes.setCampaign(HelperCLass.mainContract.getCandidateCampaign(candidatesIVoted).send());
+                    HelperCLass.arrayListMyVotes.add(setGetMyVotes);
+                }
             }
-            adapterHistoryRecyclerview.notifyDataSetChanged();
-        }
-        catch (Exception e) {
+            catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
+            return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+                 adapterHistoryRecyclerview.notifyDataSetChanged();
+                 if(swipeContainer.isRefreshing())
+            swipeContainer.setRefreshing(false);
+
+        }
     }
 }

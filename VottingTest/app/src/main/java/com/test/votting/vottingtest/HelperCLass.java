@@ -1,6 +1,7 @@
 package com.test.votting.vottingtest;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 public class HelperCLass
 {
 
+    ProgressDialog progressDialog;
     public static Web3j   web3 = Web3jFactory.build(new HttpService("https://rinkeby.infura.io/v3/203f4b27aa6a41c6958b6c8ff6f4d729"));  // defaults to http://localhost:8545/
     public static Credentials credentials = Credentials.create("4274b048585600a5732d24d055e5ca2ed6df5311b895d4ed6c1aea0019881021");
 
@@ -54,6 +56,14 @@ public class HelperCLass
         editor=sharedPreferences.edit();
 
         return editor;
+    }
+    public ProgressDialog getProgress(String title,String message)
+    {
+        progressDialog=new ProgressDialog(activity);
+        progressDialog.setTitle(title);
+        progressDialog.setMessage(message);
+        return progressDialog;
+
     }
 
 }
