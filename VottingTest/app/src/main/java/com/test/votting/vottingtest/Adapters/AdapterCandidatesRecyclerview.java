@@ -113,54 +113,30 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
 
         }
     }
-
     class LongOperation extends AsyncTask<String, Void, String> {
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Toast.makeText(act, grantVoteStauts, Toast.LENGTH_SHORT).show();
+            Toast.makeText(act, helperCLass.getSharedPreferences().getString("MyAddress", ""), Toast.LENGTH_SHORT).show();
+
         }
 
         @Override
         protected String doInBackground(String... params) {
-
-
-
             try {
 
-                grantVoteStauts=HelperCLass.mainContract.Voting (
+                    grantVoteStauts=HelperCLass.mainContract.Voting (
                         helperCLass.getSharedPreferences().getString("MyAddress", ""),
-                        arrayList.get(publicPosition).getCandidateNationalID()).send().toString();
+                        arrayList.get(publicPosition).getCandidateNationalID()).send();
 
-               // String candidatesIVoted=arrayList.get(publicPosition).getCandidateNationalID();
-               // String candidatesIVoted = String.valueOf(HelperCLass.mainContract.Voting(
-                 //       helperCLass.getSharedPreferences().getString("MyAddress", ""),arrayList.get(publicPosition).getCandidateNationalID()).send());
-             // Log.d("candidatesIVoted",candidatesIVoted);
-//                setGetMyVotes = new SetGetMyVotes();
-//                //     HelperCLass.mainContract.Voting("","").send();
-//                setGetMyVotes.setCity(HelperCLass.mainContract.getVoterCity(candidatesIVoted).send().toString());
-//                setGetMyVotes.setName(HelperCLass.mainContract.getCandidateName(candidatesIVoted).send().toString());
-//                setGetMyVotes.setYear(HelperCLass.mainContract.getCandidateYear(candidatesIVoted).send().toString());
-//                HelperCLass.arrayListMyVotes.add(setGetMyVotes);
+
             } catch (Exception e) {
                 e.printStackTrace();
-                //  Toast.makeText(act, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
 
-//                            setGetHistory=new SetGetMyVotes();
-//                            setGetHistory.setCampaign(arrayList.get(position).getCampaign());
-//                            setGetHistory.setCity(arrayList.get(position).getCity());
-//                            setGetHistory.setName(arrayList.get(position).getName());
-//                            setGetHistory.setNationalID(arrayList.get(position).getCandidateNationalID());
-//                            setGetHistory.setPic(arrayList.get(position).getPic());
-//                         //   setGetHistory.setStatus(1);
-//                            setGetHistory.setYear(arrayList.get(position).getYear());
-//                            HelperCLass.arrayListMyVotes.add(setGetHistory);
-//                            arrayList.get(position).setStatusVoted(1);
-//                            notifyDataSetChanged();
-//                            alertDialog.dismiss();
+//
             return null;
 
         }

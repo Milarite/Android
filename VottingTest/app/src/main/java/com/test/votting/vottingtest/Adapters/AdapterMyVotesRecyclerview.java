@@ -2,6 +2,7 @@ package com.test.votting.vottingtest.Adapters;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -28,6 +29,7 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
     ArrayList<SetGetMyVotes> arrayList=new ArrayList();
     HelperCLass helperCLass;
     public Activity act;
+    ProgressDialog progressDialog;
     int publicPosition;
 
     public AdapterMyVotesRecyclerview(ArrayList<SetGetMyVotes> list, Activity context)
@@ -64,6 +66,8 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
+                        progressDialog=helperCLass.getProgress("Revoking","Please wait");
+                        progressDialog.show();
                         publicPosition=position;
                         LongOperation longOperation=new LongOperation();
                         longOperation.execute("");
@@ -110,7 +114,6 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
 
         }
     }
-
     class LongOperation extends AsyncTask<String, Void, String> {
 
         @Override
@@ -119,6 +122,7 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
             Toast.makeText(act, "Done", Toast.LENGTH_SHORT).show();
             arrayList.remove(publicPosition);
             notifyDataSetChanged();
+            progressDialog.dismiss();
         }
 
         @Override

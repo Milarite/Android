@@ -71,23 +71,13 @@ public class MyVotesFragment extends Fragment {
             @Override
             public void onRefresh() {
 
-                // longOperation = new LongOperation();
+                 longOperation = new LongOperation();
 
                 longOperation.execute("");
             }
         });
         return v;
     }
-
-
-
-
-
-
-
-
-
-
 
     class LongOperation extends AsyncTask<String, Void, String> {
 
@@ -109,6 +99,7 @@ public class MyVotesFragment extends Fragment {
                     setGetMyVotes.setName(HelperCLass.mainContract.getCandidateName(candidatesIVoted).send());
                     setGetMyVotes.setYear(HelperCLass.mainContract.getCandidateYear(candidatesIVoted).send());
                     setGetMyVotes.setCampaign(HelperCLass.mainContract.getCandidateCampaign(candidatesIVoted).send());
+                    setGetMyVotes.setNationalID(candidatesIVoted);
                     HelperCLass.arrayListMyVotes.add(setGetMyVotes);
                 }
             }
@@ -127,6 +118,8 @@ public class MyVotesFragment extends Fragment {
                  adapterHistoryRecyclerview.notifyDataSetChanged();
                  if(swipeContainer.isRefreshing())
             swipeContainer.setRefreshing(false);
+
+        //    Toast.makeText(getActivity(),myVotesLength , Toast.LENGTH_SHORT).show();
 
         }
     }

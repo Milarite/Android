@@ -64,7 +64,7 @@ public class CandidatesFramgnet extends Fragment {
             @Override
             public void onRefresh() {
 
-                // longOperation = new LongOperation();
+                 longOperation = new LongOperation();
 
                 longOperation.execute("");
             }

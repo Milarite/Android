@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,7 @@ public class SigninVoterFragment extends Fragment {
     HelperCLass helperCLass;
     SharedPreferences.Editor editor;
     TextView signin;
-    boolean singInStatus;
+    String signInStatus;
     ProgressDialog progressDialog;
     public SigninVoterFragment() {
         // Required empty public constructor
@@ -75,7 +74,7 @@ public class SigninVoterFragment extends Fragment {
         else {
             progressDialog=helperCLass.getProgress("Signin","Please wait");
             progressDialog.show();
-            LongOperation longOperation=new LongOperation();
+            LongOperationCheck longOperation=new LongOperationCheck();
             longOperation.execute("");
 
 
@@ -83,15 +82,25 @@ public class SigninVoterFragment extends Fragment {
 
     }
 
-    class LongOperation extends AsyncTask<String, Void, String> {
+    class LongOperationCheck extends AsyncTask<String, Void, String> {
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            if(singInStatus==false)
-            {
-                Toast.makeText(getActivity(), "Login failed", Toast.LENGTH_SHORT).show();
 
+
+            if(signInStatus.equals("signInStatus"))
+            {
+                Toast.makeText(getActivity(), "Login Failed", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                editor=helperCLass.getEditor();
+                    editor.putString("nationalID",nationalID.getText().toString());
+                    editor.putString("MyAddress",signInStatus);
+                    editor.commit();
+                    startActivity(new Intent(getActivity(), Main2Activity.class));
+                    getActivity().finish();
             }
             progressDialog.dismiss();
 
@@ -100,44 +109,18 @@ public class SigninVoterFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
 
+
             try {
 
-
-                if( HelperCLass.voters.checkIdAndPassword(nationalID.getText().toString(),password.getText().toString()).send().equals("0"))
-                {
-                    singInStatus=false;
-                }
-                else
-                {
-                    singInStatus=true;
-
-                    editor=helperCLass.getEditor();
-                    editor.putString("nationalID",nationalID.getText().toString());
-                 //   String result[]=HelperCLass.voters.checkIdAndPassword(nationalID.getText().toString(),password.getText().toString()).send().split("//");
-//                    editor.putString("MyPrivate",result[0]);
-//                    editor.putString("MyAddress",result[1]);
-                    editor.putString("MyAddress",HelperCLass.voters.checkIdAndPassword(nationalID.getText().toString(),password.getText().toString()).send());
-                    editor.commit();
-                    startActivity(new Intent(getActivity(), Main2Activity.class));
-                    getActivity().finish();
-                }
+                signInStatus=HelperCLass.voters.checkIdAndPassword(nationalID.getText().toString(),password.getText().toString()).send();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
 
             return null;
         }
 
     }
-
-
-
-
-
-
-
 
 
 

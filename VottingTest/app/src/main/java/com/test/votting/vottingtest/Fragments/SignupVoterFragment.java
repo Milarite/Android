@@ -21,7 +21,9 @@ import com.test.votting.vottingtest.HelperCLass;
 import com.test.votting.vottingtest.R;
 import com.test.votting.vottingtest.RegistrationActivity;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.web3j.abi.datatypes.Bool;
 
 import java.util.UUID;
 
@@ -29,6 +31,7 @@ import java.util.UUID;
  * A simple {@link Fragment} subclass.
  */
 public class SignupVoterFragment extends Fragment {
+    Exception ee;
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
     EditText nationalID, password, name, birthOfDate, city, year;
@@ -89,67 +92,94 @@ public class SignupVoterFragment extends Fragment {
           progressDialog=helperCLass.getProgress("Signup","Please wait");
           progressDialog.show();
             fragmentManager=getFragmentManager();
-            LongOperation longOperation=new LongOperation();
-            longOperation.execute("");
+            LongOperationCheck longOperation=new LongOperationCheck();
+            longOperation.execute();
 
         }
     }
 
 
-    class LongOperation extends AsyncTask<String, Void, String> {
+    class LongOperationCheck extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            try {
+                signUpStatus=HelperCLass.mainContract.checkNationalID(nationalID.getText().toString()).send();
+        } catch (Exception e) {
+            e.printStackTrace();
+            ee=e;
+
+        }
+
+            return null;
+        }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             if(signUpStatus==true)
-                Toast.makeText(registrationActivity, "Done", Toast.LENGTH_SHORT).show();
-            else
-                  Toast.makeText(getActivity(), "This national id is exist", Toast.LENGTH_SHORT).show();
-            progressDialog.dismiss();
+            {
+                LongOperationSignup longOperationSignup=new LongOperationSignup();
+                longOperationSignup.execute("");
+            }
+            else if(signUpStatus==false)
+            {
+                Toast.makeText(getActivity(), "This national id is exist", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        }
+
+        //
+//        @Override
+//        protected boolean doInBackground(String... params) {
+//           // signUpStatus=true;
+//
+//            try {
+//                signUpStatus=true;
+//
+//                // String id = nationalID.getText().toString();
+//             //   HelperCLass.mainContract.checkNationalID(nationalID.getText().toString()).send();
+//           //     signUpStatus=HelperCLass.mainContract.checkNationalID(nationalID.getText().toString()).send();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                ee=e;
+//
+//            }
+//            return signUpStatus;
+//        }
+
+    }
+
+    class LongOperationSignup extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if(progressDialog.isShowing())
+                progressDialog.dismiss();
+            Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
+                transaction=fragmentManager.beginTransaction();
+                transaction.replace(R.id.linearRegitration,new SigninVoterFragment());
+                transaction.addToBackStack("");
+                transaction.commit();
+
         }
 
         @Override
         protected String doInBackground(String... params) {
 
+
+            String seed = UUID.randomUUID().toString();
+            JSONObject result = createPrivateAndPublicKeys.process(seed);
             try {
-                String seed = UUID.randomUUID().toString();
-                JSONObject result = createPrivateAndPublicKeys.process(seed); // get a json containing private key and address
-                if(HelperCLass.voters.checkNationalID(result.getString("address"),nationalID.getText().toString()
+                HelperCLass.mainContract.signUpVoter(result.getString("address"),nationalID.getText().toString()
                         , password.getText().toString(), name.getText().toString(), birthOfDate.getText().toString()
-                        , city.getText().toString(), year.getText().toString()).send()==true)
-                {
-
-                    signUpStatus=true;
-
-                    /*"privatekey")+"//"+*/
-//                    HelperCLass.voters.signUpVoter(result.getString("address"),nationalID.getText().toString()
-//                            , password.getText().toString(), name.getText().toString(), birthOfDate.getText().toString()
-//                            , city.getText().toString(), year.getText().toString()).send();
-                  //  Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
-                    transaction=fragmentManager.beginTransaction();
-                    transaction.replace(R.id.linearRegitration,new SigninVoterFragment());
-                    transaction.addToBackStack("");
-                    transaction.commit();
-
-
-                }
-                else
-                {
-                    signUpStatus=false;
-
-                }
+                        , city.getText().toString(), year.getText().toString()).send();
             } catch (Exception e) {
                 e.printStackTrace();
-                //     Log.d("ErrorSignUp",e.getMessage());
             }
-
-
             return null;
         }
-
     }
-
-
-
-
 }
