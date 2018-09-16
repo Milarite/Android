@@ -23,6 +23,14 @@ public class HelperCLass
 {
 
     ProgressDialog progressDialog;
+    //https://rinkeby.infura.io/v3/afbac1a223484d84a7784a133d1f2010  Moath
+    //https://rinkeby.infura.io/v3/203f4b27aa6a41c6958b6c8ff6f4d729 Rajai
+
+    //4274b048585600a5732d24d055e5ca2ed6df5311b895d4ed6c1aea0019881021 Rajai
+
+    //50FBEE34A355F70931B95C5C114AED5FB21BAF14971C1CDCC067BA46024C7275 Moath
+
+    public static String myCity,myYear="",myBD,myName;
     public static Web3j   web3 = Web3jFactory.build(new HttpService("https://rinkeby.infura.io/v3/203f4b27aa6a41c6958b6c8ff6f4d729"));  // defaults to http://localhost:8545/
     public static Credentials credentials = Credentials.create("4274b048585600a5732d24d055e5ca2ed6df5311b895d4ed6c1aea0019881021");
 

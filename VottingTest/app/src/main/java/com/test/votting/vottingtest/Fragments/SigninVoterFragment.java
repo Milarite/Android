@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.test.votting.vottingtest.HelperCLass;
 import com.test.votting.vottingtest.Main2Activity;
 import com.test.votting.vottingtest.R;
+import com.test.votting.vottingtest.RegistrationActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +28,7 @@ public class SigninVoterFragment extends Fragment {
     HelperCLass helperCLass;
     SharedPreferences.Editor editor;
     TextView signin;
-    String signInStatus;
+    String signInStatus="0x0000000000000000000000000000000000000002";
     ProgressDialog progressDialog;
     public SigninVoterFragment() {
         // Required empty public constructor
@@ -39,27 +40,22 @@ public class SigninVoterFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_signin_voter, container, false);
+      RegistrationActivity.registrationTitle.setText("SIGN-IN");
+
         signin=(TextView)v.findViewById(R.id.signin);
 
         helperCLass=new HelperCLass(getActivity());
         nationalID=(EditText)v.findViewById(R.id.nationalID);
         password=(EditText)v.findViewById(R.id.password);
-        helperCLass.getEditor().putString("MyPrivate","");
-        helperCLass.getEditor().putString("MyAddress","");
-        helperCLass.getEditor().commit();
-
-
-
-//        helperCLass.getEditor().clear();
-//        helperCLass.getEditor().commit();
-
-
+        helperCLass.getEditor().clear().commit();
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loginFunc();
             }
         });
+        HelperCLass.myYear="";
+        HelperCLass.arrayList.clear();
 
         return v;
     }
@@ -89,7 +85,7 @@ public class SigninVoterFragment extends Fragment {
             super.onPostExecute(s);
 
 
-            if(signInStatus.equals("signInStatus"))
+            if(signInStatus.equals("0x0000000000000000000000000000000000000002"))
             {
                 Toast.makeText(getActivity(), "Login Failed", Toast.LENGTH_SHORT).show();
             }
@@ -112,7 +108,7 @@ public class SigninVoterFragment extends Fragment {
 
             try {
 
-                signInStatus=HelperCLass.voters.checkIdAndPassword(nationalID.getText().toString(),password.getText().toString()).send();
+                signInStatus=HelperCLass.mainContract.checkIdAndPasswordVoter(nationalID.getText().toString(),password.getText().toString()).send();
             } catch (Exception e) {
                 e.printStackTrace();
             }

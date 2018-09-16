@@ -2,6 +2,7 @@ package com.test.votting.vottingtest.Adapters;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +33,7 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
     ArrayList<SetGetCandidatesInformations> arrayList = new ArrayList();
     public Activity act;
     String grantVoteStauts;
+    ProgressDialog progressDialog;
 
     public AdapterCandidatesRecyclerview(ArrayList<SetGetCandidatesInformations> list, Activity context) {
         arrayList = list;
@@ -63,14 +65,16 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
 
                 Log.d("MyAddressLL",helperCLass.getSharedPreferences().getString("MyAddress", ""));
 
-                if (arrayList.get(publicPosition).getStatusVoted() == 0) {
+            //    if (arrayList.get(position).getStatusVoted() == 0) {
                     builder = new AlertDialog.Builder(act);
-                    builder.setTitle("Revoke vote");
+                    builder.setTitle("Grant vote");
                     builder.setMessage("Are you sure you want to grant your vote to " + arrayList.get(publicPosition).getName());
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             publicPosition=position;
+                            progressDialog=  helperCLass.getProgress("Granting","Please wait");
+                            progressDialog.show();
                             LongOperation longOperation=new LongOperation();
                             longOperation.execute("");
             }
@@ -86,7 +90,7 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
                     alertDialog.show();
 
 
-            }
+       //     }
 
             }
         });
@@ -118,15 +122,31 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Toast.makeText(act, helperCLass.getSharedPreferences().getString("MyAddress", ""), Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(act, helperCLass.getSharedPreferences().getString("MyAddress", ""), Toast.LENGTH_SHORT).show();
 
+            if(grantVoteStauts.equals("Done"))
+            {
+                LongOperationGrantVote longOperationGrantVote=new LongOperationGrantVote();
+                longOperationGrantVote.execute("");
+                Log.d("Semsem2",grantVoteStauts);
+
+
+            }
+            else {
+
+                Log.d("Semsem",grantVoteStauts);
+                progressDialog.dismiss();
+            }
+            Log.e("5ara2",helperCLass.getSharedPreferences().getString("MyAddress", ""));
+
+            Log.e("5ara",arrayList.get(publicPosition).getCandidateNationalID());
         }
 
         @Override
         protected String doInBackground(String... params) {
             try {
 
-                    grantVoteStauts=HelperCLass.mainContract.Voting (
+                    grantVoteStauts=HelperCLass.mainContract.checkIfVoted (
                         helperCLass.getSharedPreferences().getString("MyAddress", ""),
                         arrayList.get(publicPosition).getCandidateNationalID()).send();
 
@@ -141,6 +161,34 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
 
         }
     }
+
+
+
+    class LongOperationGrantVote extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            progressDialog.dismiss();
+            Toast.makeText(act, "XZZZ", Toast.LENGTH_SHORT).show();
+        }
+        @Override
+        protected String doInBackground(String... params) {
+
+            try {
+                HelperCLass.mainContract.grantYourVote(helperCLass.getSharedPreferences().getString("MyAddress",""),arrayList.get(publicPosition).getCandidateNationalID()).send();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+//
+            return null;
+
+        }
+    }
+
 
     }
 

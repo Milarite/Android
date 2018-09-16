@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:orientation="horizontal"
     android:layout_margin="5dp"
+    android:background="@color/whiteColor"
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -26,6 +27,17 @@
             android:id="@+id/candidateName"
             android:textStyle="bold"
             android:text="Rajai Marwan Mousa Abu-Saqer"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blackColor"
+            android:textSize="16dp"
+            android:id="@+id/address"
+            android:textStyle="bold"
+            android:text="Rajai Marwan Mousa Abu-Saqer"/>
+
+
         <TextView
             android:layout_width="match_parent"
             android:layout_marginTop="3dp"

@@ -24,6 +24,8 @@ import com.test.votting.vottingtest.RegistrationActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.web3j.abi.datatypes.Bool;
+import org.web3j.tx.Contract;
+import org.web3j.tx.ManagedTransaction;
 
 import java.util.UUID;
 
@@ -53,6 +55,8 @@ public class SignupVoterFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_signup_voter, container, false);
+      RegistrationActivity.registrationTitle.setText("SIGN-UP");
+
         helperCLass=new HelperCLass(getActivity());
         fragmentManager=getFragmentManager();
         signup=(TextView)v.findViewById(R.id.signup);
@@ -105,10 +109,13 @@ public class SignupVoterFragment extends Fragment {
         protected String doInBackground(String... strings) {
 
             try {
-                signUpStatus=HelperCLass.mainContract.checkNationalID(nationalID.getText().toString()).send();
+                if(HelperCLass.mainContract.checkNationalIDVoter(nationalID.getText().toString()).send())
+                signUpStatus=true;
+                else
+                    signUpStatus=false;
         } catch (Exception e) {
             e.printStackTrace();
-            ee=e;
+
 
         }
 
@@ -118,12 +125,14 @@ public class SignupVoterFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            if(signUpStatus==true)
+            if(signUpStatus==false)
             {
                 LongOperationSignup longOperationSignup=new LongOperationSignup();
                 longOperationSignup.execute("");
+             //   Toast.makeText(getActivity(), "5ara", Toast.LENGTH_SHORT).show();
+
             }
-            else if(signUpStatus==false)
+            else if(signUpStatus==true)
             {
                 Toast.makeText(getActivity(), "This national id is exist", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
@@ -158,13 +167,13 @@ public class SignupVoterFragment extends Fragment {
             super.onPostExecute(s);
             if(progressDialog.isShowing())
                 progressDialog.dismiss();
-            Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
+
+                  Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
                 transaction=fragmentManager.beginTransaction();
                 transaction.replace(R.id.linearRegitration,new SigninVoterFragment());
                 transaction.addToBackStack("");
                 transaction.commit();
-
-        }
+            }
 
         @Override
         protected String doInBackground(String... params) {

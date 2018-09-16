@@ -28,6 +28,7 @@ public class MyVotesFragment extends Fragment {
 
      SwipeRefreshLayout swipeContainer;
     LongOperation longOperation;
+    String candidatesIVoted;
     int myVotesLength=0;
     RecyclerView histotyRecyclerview;
     SetGetMyVotes setGetMyVotes;
@@ -91,16 +92,20 @@ public class MyVotesFragment extends Fragment {
                 myVotesLength= Integer.parseInt(String.valueOf(HelperCLass.mainContract.getNationalIDArrayLength(
                         helperCLass.getSharedPreferences().getString("MyAddress","")).send()));
                 for (int i = 0; i < myVotesLength; i++) {
-                    String candidatesIVoted = HelperCLass.mainContract.getVotedCandidatesAddress(
-                            helperCLass.getSharedPreferences().getString("MyAddress",""),i).send();
-                    setGetMyVotes = new SetGetMyVotes();
 
-                    setGetMyVotes.setCity(HelperCLass.mainContract.getVoterCity(candidatesIVoted).send());
-                    setGetMyVotes.setName(HelperCLass.mainContract.getCandidateName(candidatesIVoted).send());
-                    setGetMyVotes.setYear(HelperCLass.mainContract.getCandidateYear(candidatesIVoted).send());
-                    setGetMyVotes.setCampaign(HelperCLass.mainContract.getCandidateCampaign(candidatesIVoted).send());
-                    setGetMyVotes.setNationalID(candidatesIVoted);
-                    HelperCLass.arrayListMyVotes.add(setGetMyVotes);
+                     candidatesIVoted = HelperCLass.mainContract.getVotedCandidatesAddress(
+                            helperCLass.getSharedPreferences().getString("MyAddress",""), BigInteger.valueOf(i)).send();
+                     if(!candidatesIVoted.equals("0x0000000000000000000000000000000000000000")) {
+                         setGetMyVotes = new SetGetMyVotes();
+
+                         setGetMyVotes.setCity(HelperCLass.mainContract.getCandidateCity(candidatesIVoted).send());
+                         setGetMyVotes.setName(HelperCLass.mainContract.getCandidateName(candidatesIVoted).send());
+                         setGetMyVotes.setYear(HelperCLass.mainContract.getCandidateYear(candidatesIVoted).send());
+                         setGetMyVotes.setCampaign(HelperCLass.mainContract.getCandidateCampaign(candidatesIVoted).send());
+                         setGetMyVotes.setNationalID(candidatesIVoted);
+                         HelperCLass.arrayListMyVotes.add(setGetMyVotes);
+                     }
+
                 }
             }
             catch (Exception e) {

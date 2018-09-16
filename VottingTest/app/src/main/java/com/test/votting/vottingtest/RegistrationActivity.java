@@ -25,11 +25,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
-    TextView registrationTitle;
+  public static   TextView registrationTitle;
     HelperCLass helperCLass;
-    ProgressDialog progressDialog;
 
-    CreatePrivateAndPublicKeys createPrivateAndPublicKeys;
 
 
     @Override
@@ -45,7 +43,6 @@ public class RegistrationActivity extends AppCompatActivity {
 //            progressDialog.show();
         LongOperation longOperation=new LongOperation();
         longOperation.execute("");
-        registrationTitle.setText("SIGN-IN");
         fragmentManager=getFragmentManager();
         changeFragments(new SigninVoterFragment());
 
@@ -55,7 +52,7 @@ public class RegistrationActivity extends AppCompatActivity {
     {
         transaction=fragmentManager.beginTransaction();
         transaction.replace(R.id.linearRegitration,fragment);
-        transaction.addToBackStack("");
+       // transaction.addToBackStack("");
         transaction.commit();
       //  return  transaction;
     }
@@ -64,14 +61,12 @@ public class RegistrationActivity extends AppCompatActivity {
         if(!registrationTitle.getText().toString().equals("SIGN-IN"))
         {
             changeFragments(new SigninVoterFragment());
-            registrationTitle.setText("SIGN-IN");
         }
     }
     public void signupFunc(View view) {
         if(!registrationTitle.getText().toString().equals("SIGN-UP"))
         {
             changeFragments(new SignupVoterFragment());
-            registrationTitle.setText("SIGN-UP");
         }
     }
 
@@ -85,13 +80,13 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
 
-                    HelperCLass.voters = HelperCLass.voters.load("0xa1fd853a254eb62eee0cf56febe2eb29806a1876",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-                    HelperCLass.candidates = HelperCLass.candidates.load("0x69336d5f32cf4d92eed2c7860d530f12f1eba197",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-                    HelperCLass.judgment = HelperCLass.judgment.load("0x00a3178b926c65e9154d0ab66c67a2d23fe06799",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-                    HelperCLass.mainContract = HelperCLass.mainContract.load("0xecc2a0d3d3c9507567a8e8927c2abdb7fd219df2",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                    HelperCLass.voters = HelperCLass.voters.load("0xd598964c540fbe6e49f121c381887032a62483fd",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                    HelperCLass.candidates = HelperCLass.candidates.load("0xc3c1987d618f2fa91e0f775519a21477ca67312f",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                    HelperCLass.judgment = HelperCLass.judgment.load("0x037f8f496f33428acafa2ae53f49b5c1d05003db",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                    HelperCLass.mainContract = HelperCLass.mainContract.load("0x39b87fb1061f819c4273e97a08de237943f7b40d",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
 
 
-//                if(helperCLass.getSharedPreferences().getString("ContractAddressVoter","").equals(""))
+    //                if(helperCLass.getSharedPreferences().getString("ContractAddressVoter","").equals(""))
 //                {
 //                    HelperCLass.voters = HelperCLass.voters.deploy(HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT).send();
 //                    helperCLass.getEditor().putString("ContractAddressVoter",HelperCLass.voters.getContractAddress());
@@ -183,5 +178,15 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(registrationTitle.getText().toString().equals("SIGN-UP"))
+            changeFragments(new SigninVoterFragment());
+                   // else
+//        if(registrationTitle.getText().toString().equals("SIGN-IN"))
+//            finish();
+
+    }
 
 }

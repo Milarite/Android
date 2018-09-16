@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.test.votting.vottingtest.Fragments.CandidatesFramgnet;
 import com.test.votting.vottingtest.Fragments.MyVotesFragment;
+import com.test.votting.vottingtest.Fragments.SettingFragment;
 import com.test.votting.vottingtest.SolCode.MainContract;
 import com.test.votting.vottingtest.SolCode.Voters;
 
@@ -55,7 +56,6 @@ public class Main2Activity extends AppCompatActivity {
                 {
                     navigation.getMenu().getItem(1).setChecked(true);
                     changeFragments(new CandidatesFramgnet());
-                    Toast.makeText(Main2Activity.this, "Home", Toast.LENGTH_SHORT).show();
                 }
                 else
                     if(item.getItemId()==R.id.navigation_history  && !navigation.getMenu().getItem(0).isChecked())
@@ -64,7 +64,15 @@ public class Main2Activity extends AppCompatActivity {
                         navigation.getMenu().getItem(0).setChecked(true);
 
                         changeFragments(new MyVotesFragment());
-                        Toast.makeText(Main2Activity.this, "History", Toast.LENGTH_SHORT).show();
+                    }
+
+                    else
+                    if(item.getItemId()==R.id.navigation_setting  && !navigation.getMenu().getItem(2).isChecked())
+                    {
+
+                        navigation.getMenu().getItem(2).setChecked(true);
+
+                        changeFragments(new SettingFragment());
                     }
                 return false;
             }

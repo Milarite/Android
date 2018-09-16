@@ -56,6 +56,7 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
         holder.city.setText(arrayList.get(position).getCity());
         holder.status.setText(arrayList.get(position).getStatus());
         holder.year.setText(arrayList.get(position).getYear());
+        holder.address.setText(arrayList.get(position).getNationalID());
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,7 +99,7 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
     class MyRec extends RecyclerView.ViewHolder
     {
         ImageView delete,candidateImage;
-        TextView candidateName,candidateCampign,city,status,year;
+        TextView candidateName,candidateCampign,city,status,year,address;
 
 
         public MyRec(View v) {
@@ -108,6 +109,8 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
             city=(TextView)v.findViewById(R.id.city);
             status=(TextView)v.findViewById(R.id.status);
             year=(TextView)v.findViewById(R.id.year);
+            address=(TextView)v.findViewById(R.id.address);
+
 
             candidateImage=(ImageView)v.findViewById(R.id.candidateImage);
             delete=(ImageView)v.findViewById(R.id.delete);
@@ -119,10 +122,11 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Toast.makeText(act, "Done", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(act, arrayList.get(publicPosition).getNationalID(), Toast.LENGTH_SHORT).show();
             arrayList.remove(publicPosition);
             notifyDataSetChanged();
             progressDialog.dismiss();
+
         }
 
         @Override
@@ -137,4 +141,7 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
             return null;
         }
 }
+
+
+
     }
