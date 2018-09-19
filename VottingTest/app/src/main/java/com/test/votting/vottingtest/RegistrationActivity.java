@@ -25,7 +25,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
-  public static   TextView registrationTitle;
+    public static   TextView registrationTitle;
     HelperCLass helperCLass;
 
 
@@ -80,10 +80,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
 
-                    HelperCLass.voters = HelperCLass.voters.load("0xd598964c540fbe6e49f121c381887032a62483fd",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-                    HelperCLass.candidates = HelperCLass.candidates.load("0xc3c1987d618f2fa91e0f775519a21477ca67312f",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-                    HelperCLass.judgment = HelperCLass.judgment.load("0x037f8f496f33428acafa2ae53f49b5c1d05003db",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-                    HelperCLass.mainContract = HelperCLass.mainContract.load("0x39b87fb1061f819c4273e97a08de237943f7b40d",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                    HelperCLass.voters = HelperCLass.voters.load("0x4f0ba0ff63dd15f88c0099ed70a184261a50af17",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                    HelperCLass.candidates = HelperCLass.candidates.load("0x7f4417ab314659a2fb2e70136c453ac1cb22a845",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                    HelperCLass.judgment = HelperCLass.judgment.load("0x74b4442fca032dcaa1f8ab01ae02231a4848eee1",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                    HelperCLass.mainContract = HelperCLass.mainContract.load("0x5d2e93732da194ae8138086d1f8e82b074c81720",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
 
 
     //                if(helperCLass.getSharedPreferences().getString("ContractAddressVoter","").equals(""))
@@ -180,10 +180,11 @@ public class RegistrationActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+
         if(registrationTitle.getText().toString().equals("SIGN-UP"))
             changeFragments(new SigninVoterFragment());
-                   // else
+        else
+            super.onBackPressed();                   // else
 //        if(registrationTitle.getText().toString().equals("SIGN-IN"))
 //            finish();
 

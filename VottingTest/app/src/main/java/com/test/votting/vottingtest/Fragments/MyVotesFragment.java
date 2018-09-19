@@ -30,6 +30,7 @@ public class MyVotesFragment extends Fragment {
     LongOperation longOperation;
     String candidatesIVoted;
     int myVotesLength=0;
+    String candidateName;
     RecyclerView histotyRecyclerview;
     SetGetMyVotes setGetMyVotes;
     AdapterMyVotesRecyclerview adapterHistoryRecyclerview;
@@ -81,9 +82,25 @@ public class MyVotesFragment extends Fragment {
     }
 
     class LongOperation extends AsyncTask<String, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if(!swipeContainer.isRefreshing())
+                swipeContainer.setRefreshing(true);
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            if(swipeContainer.isRefreshing())
+                swipeContainer.setRefreshing(false);
+
+        }
 
         @Override
         protected String doInBackground(String... params) {
+
+
             if(HelperCLass.arrayListMyVotes !=null)
                 HelperCLass.arrayListMyVotes.clear();
 
@@ -93,13 +110,15 @@ public class MyVotesFragment extends Fragment {
                         helperCLass.getSharedPreferences().getString("MyAddress","")).send()));
                 for (int i = 0; i < myVotesLength; i++) {
 
-                     candidatesIVoted = HelperCLass.mainContract.getVotedCandidatesAddress(
+                    candidatesIVoted = HelperCLass.mainContract.getVotedCandidatesAddress(
                             helperCLass.getSharedPreferences().getString("MyAddress",""), BigInteger.valueOf(i)).send();
-                     if(!candidatesIVoted.equals("0x0000000000000000000000000000000000000000")) {
+               candidateName=HelperCLass.mainContract.getCandidateName(candidatesIVoted).send();
+//
+                     if(!candidateName.isEmpty()) {
                          setGetMyVotes = new SetGetMyVotes();
 
                          setGetMyVotes.setCity(HelperCLass.mainContract.getCandidateCity(candidatesIVoted).send());
-                         setGetMyVotes.setName(HelperCLass.mainContract.getCandidateName(candidatesIVoted).send());
+                         setGetMyVotes.setName(candidateName);
                          setGetMyVotes.setYear(HelperCLass.mainContract.getCandidateYear(candidatesIVoted).send());
                          setGetMyVotes.setCampaign(HelperCLass.mainContract.getCandidateCampaign(candidatesIVoted).send());
                          setGetMyVotes.setNationalID(candidatesIVoted);
@@ -128,4 +147,14 @@ public class MyVotesFragment extends Fragment {
 
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        longOperation.cancel(true);
+
+
+
+    }
+
 }

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.test.votting.vottingtest.HelperCLass;
+import com.test.votting.vottingtest.InternetConnection;
 import com.test.votting.vottingtest.Main2Activity;
 import com.test.votting.vottingtest.R;
 import com.test.votting.vottingtest.RegistrationActivity;
@@ -28,7 +29,7 @@ public class SigninVoterFragment extends Fragment {
     HelperCLass helperCLass;
     SharedPreferences.Editor editor;
     TextView signin;
-    String signInStatus="0x0000000000000000000000000000000000000002";
+    String signInStatus="0x0000000000000000000000000000000000000002",city;
     ProgressDialog progressDialog;
     public SigninVoterFragment() {
         // Required empty public constructor
@@ -40,7 +41,9 @@ public class SigninVoterFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_signin_voter, container, false);
-      RegistrationActivity.registrationTitle.setText("SIGN-IN");
+
+
+        RegistrationActivity.registrationTitle.setText("SIGN-IN");
 
         signin=(TextView)v.findViewById(R.id.signin);
 
@@ -51,7 +54,10 @@ public class SigninVoterFragment extends Fragment {
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginFunc();
+                if( InternetConnection.ifConnect(getActivity()))
+                    loginFunc();
+                else
+                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
             }
         });
         HelperCLass.myYear="";
@@ -88,17 +94,13 @@ public class SigninVoterFragment extends Fragment {
             if(signInStatus.equals("0x0000000000000000000000000000000000000002"))
             {
                 Toast.makeText(getActivity(), "Login Failed", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+
             }
             else
             {
-                editor=helperCLass.getEditor();
-                    editor.putString("nationalID",nationalID.getText().toString());
-                    editor.putString("MyAddress",signInStatus);
-                    editor.commit();
-                    startActivity(new Intent(getActivity(), Main2Activity.class));
-                    getActivity().finish();
+              new LongOperation().execute("");
             }
-            progressDialog.dismiss();
 
         }
 
@@ -109,6 +111,7 @@ public class SigninVoterFragment extends Fragment {
             try {
 
                 signInStatus=HelperCLass.mainContract.checkIdAndPasswordVoter(nationalID.getText().toString(),password.getText().toString()).send();
+                city=HelperCLass.mainContract.getVoterCity(signInStatus).send();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -119,7 +122,40 @@ public class SigninVoterFragment extends Fragment {
     }
 
 
+    class LongOperation extends AsyncTask<String, Void, String> {
 
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+
+
+                editor=helperCLass.getEditor();
+                editor.putString("nationalID",nationalID.getText().toString());
+                editor.putString("MyAddress",signInStatus);
+                editor.putString("city",city);
+                editor.commit();
+                startActivity(new Intent(getActivity(), Main2Activity.class));
+                getActivity().finish();
+                progressDialog.dismiss();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+
+            try {
+
+                city=HelperCLass.mainContract.getVoterCity(signInStatus).send();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+    }
 
 
 }

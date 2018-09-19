@@ -12,12 +12,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.test.votting.vottingtest.CreatePrivateAndPublicKeys;
+import com.test.votting.vottingtest.DialogDatePicker;
 import com.test.votting.vottingtest.HelperCLass;
+import com.test.votting.vottingtest.InternetConnection;
 import com.test.votting.vottingtest.R;
 import com.test.votting.vottingtest.RegistrationActivity;
 
@@ -36,7 +41,12 @@ public class SignupVoterFragment extends Fragment {
     Exception ee;
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
-    EditText nationalID, password, name, birthOfDate, city, year;
+    public static TextView birthOfDate;
+    EditText nationalID, password, name, year;
+    Spinner spinnerCity;
+    ArrayAdapter arrayAdapterSpinner;
+    String citySelected="";
+    String citiesList[]={"Amman","Zarqa","Irbid"};
     HelperCLass helperCLass;
     SharedPreferences.Editor editor;
     CreatePrivateAndPublicKeys createPrivateAndPublicKeys;
@@ -55,6 +65,7 @@ public class SignupVoterFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_signup_voter, container, false);
+
       RegistrationActivity.registrationTitle.setText("SIGN-UP");
 
         helperCLass=new HelperCLass(getActivity());
@@ -64,17 +75,43 @@ public class SignupVoterFragment extends Fragment {
         nationalID = (EditText)v. findViewById(R.id.nationalID);
         password = (EditText)v. findViewById(R.id.password);
         name = (EditText)v. findViewById(R.id.name);
-        birthOfDate = (EditText)v. findViewById(R.id.birthOfDate);
-        city = (EditText)v. findViewById(R.id.city);
+        birthOfDate = (TextView) v. findViewById(R.id.birthOfDate);
+        spinnerCity = (Spinner)v. findViewById(R.id.city);
         year = (EditText)v. findViewById(R.id.year);
+        birthOfDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DialogDatePicker(getActivity()).show();
+            }
+        });
         createPrivateAndPublicKeys = new CreatePrivateAndPublicKeys(getActivity());
 
+        arrayAdapterSpinner=new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_dropdown_item,citiesList);
+        spinnerCity.setAdapter(arrayAdapterSpinner);
+        citySelected=spinnerCity.getSelectedItem().toString();
+
+        spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                citySelected=citiesList[position].toLowerCase().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signupFunc();
+                if( InternetConnection.ifConnect(getActivity()))
+                    signupFunc();
+                else
+                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
             }
+
         });
         return v;
     }
@@ -88,8 +125,8 @@ public class SignupVoterFragment extends Fragment {
             Toast.makeText(getActivity(), "Name is required", Toast.LENGTH_SHORT).show();
         else if (birthOfDate.getText().toString().isEmpty())
             Toast.makeText(getActivity(), "Birth of date is required", Toast.LENGTH_SHORT).show();
-        else if (city.getText().toString().isEmpty())
-            Toast.makeText(getActivity(), "City is required", Toast.LENGTH_SHORT).show();
+//        else if (citySelected=="Select")
+//            Toast.makeText(getActivity(), "Select city", Toast.LENGTH_SHORT).show();
         else if (year.getText().toString().isEmpty())
             Toast.makeText(getActivity(), "Year is required", Toast.LENGTH_SHORT).show();
         else {
@@ -184,7 +221,7 @@ public class SignupVoterFragment extends Fragment {
             try {
                 HelperCLass.mainContract.signUpVoter(result.getString("address"),nationalID.getText().toString()
                         , password.getText().toString(), name.getText().toString(), birthOfDate.getText().toString()
-                        , city.getText().toString(), year.getText().toString()).send();
+                        , citySelected, year.getText().toString()).send();
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -55,10 +55,10 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
         holder.candidateName.setText(arrayList.get(position).getName());
         holder.candidateCampign.setText(arrayList.get(position).getCampaign());
         holder.city.setText(arrayList.get(position).getCity());
-        if (arrayList.get(position).getStatusVoted() == 0)
-            holder.grantYourVote.setText("Grant Your Vote");
-        else
-            holder.grantYourVote.setText("Voted");
+//        if (arrayList.get(position).getStatusVoted() == 0)
+//            holder.grantYourVote.setText("Grant Your Vote");
+//        else
+//            holder.grantYourVote.setText("Voted");
         holder.grantYourVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +68,7 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
             //    if (arrayList.get(position).getStatusVoted() == 0) {
                     builder = new AlertDialog.Builder(act);
                     builder.setTitle("Grant vote");
-                    builder.setMessage("Are you sure you want to grant your vote to " + arrayList.get(publicPosition).getName());
+                    builder.setMessage("Are you sure you want to grant your vote to " + arrayList.get(position).getName());
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -135,6 +135,7 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
             else {
 
                 Log.d("Semsem",grantVoteStauts);
+                Toast.makeText(act, grantVoteStauts, Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
             }
             Log.e("5ara2",helperCLass.getSharedPreferences().getString("MyAddress", ""));
@@ -171,7 +172,6 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
             super.onPostExecute(s);
 
             progressDialog.dismiss();
-            Toast.makeText(act, "XZZZ", Toast.LENGTH_SHORT).show();
         }
         @Override
         protected String doInBackground(String... params) {

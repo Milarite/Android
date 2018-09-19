@@ -68,6 +68,8 @@ public class HelperCLass
     public ProgressDialog getProgress(String title,String message)
     {
         progressDialog=new ProgressDialog(activity);
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setTitle(title);
         progressDialog.setMessage(message);
         return progressDialog;

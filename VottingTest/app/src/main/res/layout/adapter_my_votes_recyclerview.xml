@@ -8,10 +8,12 @@
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="60dp"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:src="@drawable/user"
         android:id="@+id/candidateImage"
-        android:src="@color/colorAccent"/>
+        />
     <LinearLayout
         android:layout_width="0dp"
         android:layout_weight="1"
@@ -29,22 +31,22 @@
             android:text="Rajai Marwan Mousa Abu-Saqer"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:textColor="@color/blackColor"
             android:textSize="16dp"
             android:id="@+id/address"
-            android:textStyle="bold"
-            android:text="Rajai Marwan Mousa Abu-Saqer"/>
+            android:text="91285iw908228"/>
 
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
+            android:lineSpacingMultiplier="1.5"
             android:id="@+id/candidateCampign"
-            android:textColor="@color/blackColor"
-            android:textSize="12dp"
+            android:textColor="@color/blueGrayColor"
+            android:textSize="13dp"
             android:text="خير الناس انفعهم للناس ، الوطن للجميع والجميع للوطن ، القضية الفلسطينية اولوية ،وباسمكم نتكلم ومن اجلكم نعمل ، بصوتك يبدأ التغيير"/>
        <LinearLayout
            android:layout_width="match_parent"
@@ -56,26 +58,26 @@
                android:layout_width="wrap_content"
                android:layout_weight="1"
                android:layout_height="wrap_content"
-               android:textStyle="italic"
+               android:textStyle="bold"
                android:id="@+id/city"
-               android:textSize="12dp"
+               android:textSize="16dp"
                android:text="Amman"/>
            <TextView
                android:layout_width="wrap_content"
                android:layout_weight="1"
                android:layout_height="wrap_content"
-               android:textStyle="italic"
+               android:textStyle="bold"
                android:id="@+id/year"
                android:gravity="right"
-               android:textSize="12dp"
+               android:textSize="16dp"
                android:text="2019"/>
            <TextView
                android:layout_width="wrap_content"
                android:layout_weight="1"
                android:layout_height="wrap_content"
-               android:textStyle="italic"
+               android:textStyle="bold"
                android:id="@+id/status"
-               android:textSize="12dp"
+               android:textSize="16dp"
                android:gravity="right"
                android:text="Win"/>
        </LinearLayout>

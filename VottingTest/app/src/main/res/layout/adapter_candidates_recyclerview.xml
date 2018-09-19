@@ -13,12 +13,12 @@
         android:orientation="horizontal">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="60dp"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="2dp"
-
+        android:src="@drawable/user"
         android:id="@+id/candidateImage"
-        android:src="@color/colorAccent"/>
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,20 +35,20 @@
             android:text="Rajai Marwan Mousa Abu-Saqer"/>
         <TextView
             android:layout_width="match_parent"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
+            android:lineSpacingMultiplier="1.5"
             android:id="@+id/candidateCampign"
-            android:textColor="@color/blackColor"
-            android:textSize="12dp"
+            android:textColor="@color/blueGrayColor"
+            android:textSize="13dp"
             android:text="خير الناس انفعهم للناس ، الوطن للجميع والجميع للوطن ، القضية الفلسطينية اولوية ،وباسمكم نتكلم ومن اجلكم نعمل ، بصوتك يبدأ التغيير"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
             android:textStyle="bold"
+            android:textSize="16dp"
             android:id="@+id/city"
-            android:layout_marginTop="3dp"
-            android:textSize="12dp"
+            android:layout_marginTop="5dp"
             android:text="Amman"/>
     </LinearLayout>
     </LinearLayout>
@@ -56,11 +56,14 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="right"
-    android:background="@drawable/edittext_login"
-    android:padding="5dp"
+    android:background="@drawable/vote_text"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp"
     android:id="@+id/grantYourVote"
-    android:textStyle="bold"
+    android:layout_margin="3dp"
     android:textColor="@color/whiteColor"
-    android:text="Grant your vote"/>
+    android:text="Vote"/>
 
 </LinearLayout>

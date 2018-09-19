@@ -25,6 +25,7 @@ public class SettingFragment extends Fragment {
 
     TextView nationalID,voterName,birthOfDate,city,year,signOut;
     HelperCLass helperCLass;
+    LongOperation longOperation;
     String yearString,cityString,birthOfDateString,voterNameString,nationalIDString;
     public SettingFragment() {
         // Required empty public constructor
@@ -54,7 +55,8 @@ public class SettingFragment extends Fragment {
         });
         if(HelperCLass.myYear.equals(""))
         {
-         new LongOperation().execute("");
+             longOperation=new LongOperation();
+            longOperation.execute("");
         }
         else
         {
@@ -98,7 +100,9 @@ public class SettingFragment extends Fragment {
     }
 
 
-
-
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        longOperation.cancel(true);
+    }
 }

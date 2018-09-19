@@ -36,7 +36,8 @@
             android:padding="10dp"
             android:textSize="16dp"
             android:textColor="#ffffff"
-            android:background="#5ad33c"
+            android:background="@color/blueGrayColor"
+
             android:onClick="signinFunc"
             android:text="SIGN-IN"/>
         <LinearLayout
@@ -51,7 +52,7 @@
             android:onClick="signupFunc"
             android:textSize="16dp"
             android:textColor="#ffffff"
-            android:background="#256562"
+            android:background="@color/blueColor"
             android:text="SIGN-UP"/>
     </LinearLayout>
 

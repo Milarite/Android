@@ -35,6 +35,8 @@ public class CandidatesFramgnet extends Fragment {
     SetGetCandidatesInformations setGetCandidatesInformations;
     StaggeredGridLayoutManager gridLayoutManager;
     AdapterCandidatesRecyclerview adapterCandidatesRecyclerview;
+    HelperCLass helperCLass;
+
     public CandidatesFramgnet() {
         // Required empty public constructor
 
@@ -44,6 +46,7 @@ public class CandidatesFramgnet extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_candidates_framgnet, container, false);
+        helperCLass=new HelperCLass(getActivity());
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
@@ -81,12 +84,30 @@ public class CandidatesFramgnet extends Fragment {
     class LongOperation extends AsyncTask<String, Void, String> {
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if(!swipeContainer.isRefreshing())
+                swipeContainer.setRefreshing(true);
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            if(swipeContainer.isRefreshing())
+                swipeContainer.setRefreshing(false);
+
+        }
+
+        @Override
         protected String doInBackground(String... params) {
+//            if(!swipeContainer.isRefreshing())
+//                swipeContainer.setRefreshing(true);
+
             if(HelperCLass.arrayList !=null)
                 HelperCLass.arrayList.clear();
 
             try {
-                String nationalID;
+                String nationalID,candidateName,city;
 
                 candidateLength=Integer.parseInt(String.valueOf(HelperCLass.candidates.getNationalIDArrayLength().send()));
 
@@ -94,16 +115,20 @@ public class CandidatesFramgnet extends Fragment {
                 {
 
                     try {
-                        nationalID=HelperCLass.mainContract.getCandidateNationalID(BigInteger.valueOf(i)).send();
 
-                        setGetCandidatesInformations=new SetGetCandidatesInformations();
-                        setGetCandidatesInformations.setName(HelperCLass.mainContract.getCandidateName(nationalID).send());
-                        setGetCandidatesInformations.setCandidateNationalID(nationalID);
-                        setGetCandidatesInformations.setCity(HelperCLass.mainContract.getCandidateCity(nationalID).send());
-                        setGetCandidatesInformations.setYear(HelperCLass.mainContract.getCandidateYear(nationalID).send());
-                        setGetCandidatesInformations.setNumberOfVotes( Integer.parseInt(String.valueOf(HelperCLass.mainContract.getCandidateVotesNumber(nationalID).send())));
-                        setGetCandidatesInformations.setCampaign(HelperCLass.mainContract.getCandidateCampaign(nationalID).send());
-                        HelperCLass.  arrayList.add(setGetCandidatesInformations);
+                        nationalID=HelperCLass.mainContract.getCandidateNationalID(BigInteger.valueOf(i)).send();
+                        candidateName=HelperCLass.mainContract.getCandidateName(nationalID).send();
+                        city=HelperCLass.mainContract.getCandidateCity(nationalID).send();
+                        if(!candidateName.isEmpty() && city.toLowerCase().equals(helperCLass.getSharedPreferences().getString("city","").toLowerCase())) {
+                            setGetCandidatesInformations = new SetGetCandidatesInformations();
+                            setGetCandidatesInformations.setName(candidateName);
+                            setGetCandidatesInformations.setCandidateNationalID(nationalID);
+                            setGetCandidatesInformations.setCity(city);
+                            setGetCandidatesInformations.setYear(HelperCLass.mainContract.getCandidateYear(nationalID).send());
+                            setGetCandidatesInformations.setNumberOfVotes(Integer.parseInt(String.valueOf(HelperCLass.mainContract.getCandidateVotesNumber(nationalID).send())));
+                            setGetCandidatesInformations.setCampaign(HelperCLass.mainContract.getCandidateCampaign(nationalID).send());
+                            HelperCLass.arrayList.add(setGetCandidatesInformations);
+                        }
                         //       Toast.makeText(getActivity(), String.valueOf(HelperCLass.arrayList.size()), Toast.LENGTH_SHORT).show();
                     }
                     catch (Exception e)
@@ -135,5 +160,13 @@ public class CandidatesFramgnet extends Fragment {
 
         }
     }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        longOperation.cancel(true);
+    }
+
 
 }
