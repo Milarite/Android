@@ -19,6 +19,8 @@ import com.test.votting.vottingtest.Moduls.SetGetCandidatesInformations;
 import com.test.votting.vottingtest.Moduls.SetGetMyVotes;
 import com.test.votting.vottingtest.R;
 
+import org.web3j.protocol.core.methods.request.Transaction;
+
 import java.math.BigInteger;
 import java.security.PublicKey;
 import java.util.ArrayList;
@@ -33,6 +35,7 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
     ArrayList<SetGetCandidatesInformations> arrayList = new ArrayList();
     public Activity act;
     String grantVoteStauts;
+    String transactionHash;
     ProgressDialog progressDialog;
 
     public AdapterCandidatesRecyclerview(ArrayList<SetGetCandidatesInformations> list, Activity context) {
@@ -161,11 +164,42 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
             return null;
 
         }
+
     }
 
 
 
     class LongOperationGrantVote extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            LongOperationSentTxHash longOperationSentTxHash=new LongOperationSentTxHash();
+            longOperationSentTxHash.execute("");
+        }
+        @Override
+        protected String doInBackground(String... params) {
+
+            try {
+                 transactionHash=HelperCLass.mainContract.grantYourVote(helperCLass.getSharedPreferences().getString("MyAddress",""),arrayList.get(publicPosition).getCandidateNationalID()).send().getTransactionHash();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+//
+            return null;
+
+        }
+    }
+
+
+
+
+
+    class LongOperationSentTxHash extends AsyncTask<String, Void, String> {
+
 
         @Override
         protected void onPostExecute(String s) {
@@ -177,7 +211,7 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
         protected String doInBackground(String... params) {
 
             try {
-                HelperCLass.mainContract.grantYourVote(helperCLass.getSharedPreferences().getString("MyAddress",""),arrayList.get(publicPosition).getCandidateNationalID()).send();
+                String transactionHash=HelperCLass.mainContract.grantYourVote(helperCLass.getSharedPreferences().getString("MyAddress",""),arrayList.get(publicPosition).getCandidateNationalID()).send().getTransactionHash();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -188,6 +222,8 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
 
         }
     }
+
+
 
 
     }

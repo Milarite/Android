@@ -80,10 +80,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
 
-                    HelperCLass.voters = HelperCLass.voters.load("0x4f0ba0ff63dd15f88c0099ed70a184261a50af17",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                    HelperCLass.voters = HelperCLass.voters.load("0x97ccc88c22a5dd935896349fcc8db0b8af2045ad",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
                     HelperCLass.candidates = HelperCLass.candidates.load("0x7f4417ab314659a2fb2e70136c453ac1cb22a845",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
                     HelperCLass.judgment = HelperCLass.judgment.load("0x74b4442fca032dcaa1f8ab01ae02231a4848eee1",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-                    HelperCLass.mainContract = HelperCLass.mainContract.load("0x5d2e93732da194ae8138086d1f8e82b074c81720",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                    HelperCLass.mainContract = HelperCLass.mainContract.load("0x580ff7555e69ac272342da255d7d7bfbdd6cb021",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
 
 
     //                if(helperCLass.getSharedPreferences().getString("ContractAddressVoter","").equals(""))

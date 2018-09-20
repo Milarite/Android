@@ -120,15 +120,11 @@ public class SigninVoterFragment extends Fragment {
         }
 
     }
-
-
     class LongOperation extends AsyncTask<String, Void, String> {
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-
-
 
                 editor=helperCLass.getEditor();
                 editor.putString("nationalID",nationalID.getText().toString());

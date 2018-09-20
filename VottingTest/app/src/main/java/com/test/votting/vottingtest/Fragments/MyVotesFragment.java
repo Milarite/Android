@@ -61,10 +61,34 @@ public class MyVotesFragment extends Fragment {
         histotyRecyclerview.setAdapter(adapterHistoryRecyclerview);
         histotyRecyclerview.setLayoutManager(gridLayoutManager);
 
+
+        histotyRecyclerview.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if(recyclerView.canScrollVertically(-1))
+                {
+                    swipeContainer.setEnabled(false);
+                }
+                else
+                    swipeContainer.setEnabled(true);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+
+            }
+        });
+
       //  if(HelperCLass.arrayListMyVotes.isEmpty()) {
              longOperation = new LongOperation();
             longOperation.execute("");
        // }
+
+
 
 
 
@@ -85,8 +109,12 @@ public class MyVotesFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if(HelperCLass.arrayListMyVotes !=null)
+                HelperCLass.arrayListMyVotes.clear();
+            adapterHistoryRecyclerview.notifyDataSetChanged();
             if(!swipeContainer.isRefreshing())
                 swipeContainer.setRefreshing(true);
+
         }
 
         @Override
@@ -101,13 +129,13 @@ public class MyVotesFragment extends Fragment {
         protected String doInBackground(String... params) {
 
 
-            if(HelperCLass.arrayListMyVotes !=null)
-                HelperCLass.arrayListMyVotes.clear();
+
 
             try {
 
                 myVotesLength= Integer.parseInt(String.valueOf(HelperCLass.mainContract.getNationalIDArrayLength(
                         helperCLass.getSharedPreferences().getString("MyAddress","")).send()));
+
                 for (int i = 0; i < myVotesLength; i++) {
 
                     candidatesIVoted = HelperCLass.mainContract.getVotedCandidatesAddress(
@@ -151,7 +179,8 @@ public class MyVotesFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        longOperation.cancel(true);
+        if(longOperation !=null)
+            longOperation.cancel(true);
 
 
 

@@ -5,10 +5,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -52,30 +54,44 @@ public class CandidatesFramgnet extends Fragment {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+        swipeContainer.setEnabled(false);
         candidateRecyclerview=(RecyclerView)v.findViewById(R.id.candidateRecyclerview);
         gridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         adapterCandidatesRecyclerview=new AdapterCandidatesRecyclerview(HelperCLass.arrayList,getActivity());
         candidateRecyclerview.setAdapter(adapterCandidatesRecyclerview);
         candidateRecyclerview.setLayoutManager(gridLayoutManager);
 
-        if(HelperCLass.arrayList.isEmpty()) {
-             longOperation = new LongOperation();
-            longOperation.execute("");
-        }
+        candidateRecyclerview.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (!swipeContainer.isRefreshing()) {
+                    if (recyclerView.canScrollVertically(-1)) {
+                        swipeContainer.setEnabled(false);
+
+                    } else
+                        swipeContainer.setEnabled(true);
+                }
+            }
+        });
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
 
-                 longOperation = new LongOperation();
+                longOperation = new LongOperation();
 
                 longOperation.execute("");
+
+
             }
         });
-        //adapterCandidatesRecyclerview.notifyDataSetChanged();
-//
-//        if(HelperCLass.arrayList.isEmpty())
-//            getCandidates();
+
+        if(HelperCLass.arrayList.isEmpty()) {
+             longOperation = new LongOperation();
+            longOperation.execute("");
+        }
 
         return v;
     }
@@ -86,8 +102,11 @@ public class CandidatesFramgnet extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if(HelperCLass.arrayList !=null)
+                HelperCLass.arrayList.clear();
             if(!swipeContainer.isRefreshing())
                 swipeContainer.setRefreshing(true);
+            adapterCandidatesRecyclerview.notifyDataSetChanged();
         }
 
         @Override
@@ -103,8 +122,7 @@ public class CandidatesFramgnet extends Fragment {
 //            if(!swipeContainer.isRefreshing())
 //                swipeContainer.setRefreshing(true);
 
-            if(HelperCLass.arrayList !=null)
-                HelperCLass.arrayList.clear();
+
 
             try {
                 String nationalID,candidateName,city;
@@ -157,6 +175,8 @@ public class CandidatesFramgnet extends Fragment {
             adapterCandidatesRecyclerview.notifyDataSetChanged();
             if(swipeContainer.isRefreshing())
                 swipeContainer.setRefreshing(false);
+          //  candidateRecyclerview.setNestedScrollingEnabled(false);
+
 
         }
     }
@@ -165,8 +185,10 @@ public class CandidatesFramgnet extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        if(longOperation !=null)
         longOperation.cancel(true);
     }
+
 
 
 }
