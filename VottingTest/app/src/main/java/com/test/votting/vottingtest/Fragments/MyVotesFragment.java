@@ -144,7 +144,8 @@ public class MyVotesFragment extends Fragment {
 //
                      if(!candidateName.isEmpty()) {
                          setGetMyVotes = new SetGetMyVotes();
-
+                         setGetMyVotes.setTxtHash(HelperCLass.mainContract.getVotedCandidatesTxtHash(
+                                 helperCLass.getSharedPreferences().getString("MyAddress",""), BigInteger.valueOf(i)).send());
                          setGetMyVotes.setCity(HelperCLass.mainContract.getCandidateCity(candidatesIVoted).send());
                          setGetMyVotes.setName(candidateName);
                          setGetMyVotes.setYear(HelperCLass.mainContract.getCandidateYear(candidatesIVoted).send());

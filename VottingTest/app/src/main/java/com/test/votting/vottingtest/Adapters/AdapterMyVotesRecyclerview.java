@@ -70,7 +70,7 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
                         progressDialog=helperCLass.getProgress("Revoking","Please wait");
                         progressDialog.show();
                         publicPosition=position;
-                        LongOperation longOperation=new LongOperation();
+                        LongOperationRevoke longOperation=new LongOperationRevoke();
                         longOperation.execute("");
 
 
@@ -117,7 +117,7 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
 
         }
     }
-    class LongOperation extends AsyncTask<String, Void, String> {
+    class LongOperationRevoke extends AsyncTask<String, Void, String> {
 
         @Override
         protected void onPostExecute(String s) {
@@ -133,7 +133,9 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
         protected String doInBackground(String... params) {
 
             try {
+
                 HelperCLass.mainContract.revokeMyVote(helperCLass.getSharedPreferences().getString("MyAddress",""),arrayList.get(publicPosition).getNationalID()).send();
+                HelperCLass.mainContract.removeTxtHashToCandidate(arrayList.get(publicPosition).getNationalID(),arrayList.get(publicPosition).getTxtHash()).send();
             } catch (Exception e) {
                 e.printStackTrace();
             }

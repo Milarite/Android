@@ -1,7 +1,7 @@
 package com.test.votting.vottingtest.Moduls;
 
 public class SetGetMyVotes {
-    private String nationalID,name, campaign,year,pic,status,city;
+    private String nationalID,name, campaign,year,pic,status,city,txtHash;
 
     public String getNationalID() {
         return nationalID;
@@ -57,5 +57,13 @@ public class SetGetMyVotes {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getTxtHash() {
+        return txtHash;
+    }
+
+    public void setTxtHash(String txtHash) {
+        this.txtHash = txtHash;
     }
 }

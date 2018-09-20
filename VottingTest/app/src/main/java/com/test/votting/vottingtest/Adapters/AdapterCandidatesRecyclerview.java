@@ -66,34 +66,34 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
             @Override
             public void onClick(View v) {
 
-                Log.d("MyAddressLL",helperCLass.getSharedPreferences().getString("MyAddress", ""));
+                Log.d("MyAddressLL", helperCLass.getSharedPreferences().getString("MyAddress", ""));
 
-            //    if (arrayList.get(position).getStatusVoted() == 0) {
-                    builder = new AlertDialog.Builder(act);
-                    builder.setTitle("Grant vote");
-                    builder.setMessage("Are you sure you want to grant your vote to " + arrayList.get(position).getName());
-                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            publicPosition=position;
-                            progressDialog=  helperCLass.getProgress("Granting","Please wait");
-                            progressDialog.show();
-                            LongOperation longOperation=new LongOperation();
-                            longOperation.execute("");
-            }
-        });
+                //    if (arrayList.get(position).getStatusVoted() == 0) {
+                builder = new AlertDialog.Builder(act);
+                builder.setTitle("Grant vote");
+                builder.setMessage("Are you sure you want to grant your vote to " + arrayList.get(position).getName());
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        publicPosition = position;
+                        progressDialog = helperCLass.getProgress("Granting", "Please wait");
+                        progressDialog.show();
+                        LongOperation longOperation = new LongOperation();
+                        longOperation.execute("");
+                    }
+                });
 
-                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            alertDialog.dismiss();
-                        }
-                    });
-                    alertDialog = builder.create();
-                    alertDialog.show();
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.dismiss();
+                    }
+                });
+                alertDialog = builder.create();
+                alertDialog.show();
 
 
-       //     }
+                //     }
 
             }
         });
@@ -120,37 +120,36 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
 
         }
     }
+
     class LongOperation extends AsyncTask<String, Void, String> {
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-          //  Toast.makeText(act, helperCLass.getSharedPreferences().getString("MyAddress", ""), Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(act, helperCLass.getSharedPreferences().getString("MyAddress", ""), Toast.LENGTH_SHORT).show();
 
-            if(grantVoteStauts.equals("Done"))
-            {
-                LongOperationGrantVote longOperationGrantVote=new LongOperationGrantVote();
+            if (grantVoteStauts.equals("Done")) {
+                LongOperationGrantVote longOperationGrantVote = new LongOperationGrantVote();
                 longOperationGrantVote.execute("");
-                Log.d("Semsem2",grantVoteStauts);
+                Log.d("Semsem2", grantVoteStauts);
 
 
-            }
-            else {
+            } else {
 
-                Log.d("Semsem",grantVoteStauts);
+                Log.d("Semsem", grantVoteStauts);
                 Toast.makeText(act, grantVoteStauts, Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
             }
-            Log.e("5ara2",helperCLass.getSharedPreferences().getString("MyAddress", ""));
+            Log.e("5ara2", helperCLass.getSharedPreferences().getString("MyAddress", ""));
 
-            Log.e("5ara",arrayList.get(publicPosition).getCandidateNationalID());
+            Log.e("5ara", arrayList.get(publicPosition).getCandidateNationalID());
         }
 
         @Override
         protected String doInBackground(String... params) {
             try {
 
-                    grantVoteStauts=HelperCLass.mainContract.checkIfVoted (
+                grantVoteStauts = HelperCLass.mainContract.checkIfVoted(
                         helperCLass.getSharedPreferences().getString("MyAddress", ""),
                         arrayList.get(publicPosition).getCandidateNationalID()).send();
 
@@ -168,21 +167,21 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
     }
 
 
-
     class LongOperationGrantVote extends AsyncTask<String, Void, String> {
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            LongOperationSentTxHash longOperationSentTxHash=new LongOperationSentTxHash();
+            LongOperationSendTxHashVoter longOperationSentTxHash = new LongOperationSendTxHashVoter();
             longOperationSentTxHash.execute("");
         }
+
         @Override
         protected String doInBackground(String... params) {
 
             try {
-                 transactionHash=HelperCLass.mainContract.grantYourVote(helperCLass.getSharedPreferences().getString("MyAddress",""),arrayList.get(publicPosition).getCandidateNationalID()).send().getTransactionHash();
+                transactionHash = HelperCLass.mainContract.grantYourVote(helperCLass.getSharedPreferences().getString("MyAddress", ""), arrayList.get(publicPosition).getCandidateNationalID()).send().getTransactionHash();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -195,10 +194,38 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
     }
 
 
+    class LongOperationSendTxHashVoter extends AsyncTask<String, Void, String> {
 
 
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            LongOperationSendTxHashCandidate longOperationSendTxHashCandidate = new LongOperationSendTxHashCandidate();
+            longOperationSendTxHashCandidate.execute("");
 
-    class LongOperationSentTxHash extends AsyncTask<String, Void, String> {
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            try {
+
+                HelperCLass.mainContract.addTxtHashVoter(helperCLass.getSharedPreferences().getString("MyAddress", "")
+                        , transactionHash, arrayList.get(publicPosition).getCandidateNationalID()).send();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+//
+            return null;
+
+        }
+    }
+
+
+    class LongOperationSendTxHashCandidate extends AsyncTask<String, Void, String> {
 
 
         @Override
@@ -207,11 +234,14 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
 
             progressDialog.dismiss();
         }
+
         @Override
         protected String doInBackground(String... params) {
 
             try {
-                String transactionHash=HelperCLass.mainContract.grantYourVote(helperCLass.getSharedPreferences().getString("MyAddress",""),arrayList.get(publicPosition).getCandidateNationalID()).send().getTransactionHash();
+
+                HelperCLass.mainContract.addTxtHashToCandidate(arrayList.get(publicPosition).getCandidateNationalID(), transactionHash).send();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -220,11 +250,8 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
 //
             return null;
 
+
         }
     }
-
-
-
-
-    }
+}
 
