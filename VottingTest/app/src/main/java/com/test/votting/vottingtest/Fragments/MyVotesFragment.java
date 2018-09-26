@@ -1,6 +1,8 @@
 package com.test.votting.vottingtest.Fragments;
 
 
+import android.app.Service;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -17,17 +19,23 @@ import com.test.votting.vottingtest.Adapters.AdapterMyVotesRecyclerview;
 import com.test.votting.vottingtest.HelperCLass;
 import com.test.votting.vottingtest.Moduls.SetGetMyVotes;
 import com.test.votting.vottingtest.R;
+import com.test.votting.vottingtest.Services;
 
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.util.Date;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MyVotesFragment extends Fragment {
-
-     SwipeRefreshLayout swipeContainer;
+    long unixSecondsDateTime;
+    String [] times;
+    SwipeRefreshLayout swipeContainer;
     LongOperation longOperation;
+    String currentTime,currentDate,fromTime,toTime,fromDate;
+
     String candidatesIVoted;
     int myVotesLength=0;
     String candidateName;
@@ -49,6 +57,10 @@ public class MyVotesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_my_votes, container, false);
+
+//        getActivity().startService(new Intent(getActivity(), Service.class));
+//        getActivity().stopService(new Intent(getActivity(),Service.class));
+
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
@@ -136,6 +148,17 @@ public class MyVotesFragment extends Fragment {
                 myVotesLength= Integer.parseInt(String.valueOf(HelperCLass.mainContract.getNationalIDArrayLength(
                         helperCLass.getSharedPreferences().getString("MyAddress","")).send()));
 
+
+
+                unixSecondsDateTime = Long.parseLong(String.valueOf(HelperCLass.mainContract.getCurrentTime().send()));
+                Date dateTime = new Date(unixSecondsDateTime*1000L);
+                currentTime=HelperCLass.simpleTimeFormat.format(dateTime);
+                currentDate=HelperCLass.simpleDateFormat.format(dateTime);
+                fromDate=HelperCLass.mainContract.getStartDate().send();
+                times=HelperCLass.mainContract.getPeriod().send().split("-");
+                fromTime=times[0];
+                toTime=times[1];
+
                 for (int i = 0; i < myVotesLength; i++) {
 
                     candidatesIVoted = HelperCLass.mainContract.getVotedCandidatesAddress(
@@ -148,6 +171,26 @@ public class MyVotesFragment extends Fragment {
                                  helperCLass.getSharedPreferences().getString("MyAddress",""), BigInteger.valueOf(i)).send());
                          setGetMyVotes.setCity(HelperCLass.mainContract.getCandidateCity(candidatesIVoted).send());
                          setGetMyVotes.setName(candidateName);
+
+                         if(HelperCLass.simpleDateFormat.parse(HelperCLass.fromDate).before(HelperCLass.simpleDateFormat.parse(currentDate))
+                                 ||
+                                 (
+                                         HelperCLass.simpleTimeFormat.parse(toTime).before( HelperCLass.simpleTimeFormat.parse( currentTime))
+                                         &&
+                                                 HelperCLass.simpleDateFormat.parse(HelperCLass.fromDate).equals(HelperCLass.simpleDateFormat.parse(currentDate))
+
+                                 )
+                                 )
+                         {
+                             if(HelperCLass.mainContract.winnerCandidate().send().equals(candidatesIVoted))
+                             setGetMyVotes.setStatus("1");
+                             else
+                                 setGetMyVotes.setStatus("-1");
+
+                         }
+                         else
+                             setGetMyVotes.setStatus("0");
+
                          setGetMyVotes.setYear(HelperCLass.mainContract.getCandidateYear(candidatesIVoted).send());
                          setGetMyVotes.setCampaign(HelperCLass.mainContract.getCandidateCampaign(candidatesIVoted).send());
                          setGetMyVotes.setNationalID(candidatesIVoted);

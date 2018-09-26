@@ -32,6 +32,7 @@ import java.util.UUID;
 public class CandidatesFramgnet extends Fragment {
     SwipeRefreshLayout swipeContainer;
     LongOperation longOperation;
+   // String startDate;
     RecyclerView candidateRecyclerview;
     int candidateLength=0;
     SetGetCandidatesInformations setGetCandidatesInformations;
@@ -133,6 +134,7 @@ public class CandidatesFramgnet extends Fragment {
                 {
 
                     try {
+                        //startDate =HelperCLass.mainContract.getStartDate().send();
 
                         nationalID=HelperCLass.mainContract.getCandidateNationalID(BigInteger.valueOf(i)).send();
                         candidateName=HelperCLass.mainContract.getCandidateName(nationalID).send();
@@ -172,9 +174,12 @@ public class CandidatesFramgnet extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+           // Toast.makeText(getActivity(), startDate, Toast.LENGTH_SHORT).show();
             adapterCandidatesRecyclerview.notifyDataSetChanged();
             if(swipeContainer.isRefreshing())
                 swipeContainer.setRefreshing(false);
+
+
           //  candidateRecyclerview.setNestedScrollingEnabled(false);
 
 

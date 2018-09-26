@@ -19,6 +19,8 @@ import org.json.JSONObject;
 import org.web3j.tx.Contract;
 import org.web3j.tx.ManagedTransaction;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -28,14 +30,14 @@ public class RegistrationActivity extends AppCompatActivity {
     public static   TextView registrationTitle;
     HelperCLass helperCLass;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         helperCLass=new HelperCLass(RegistrationActivity.this);
-       // helperCLass.getEditor().clear().commit();
+        helperCLass.keepScreenLight();
+
+        // helperCLass.getEditor().clear().commit();
         registrationTitle=(TextView)findViewById(R.id.registrationTitle);
 //        progressDialog=new ProgressDialog(RegistrationActivity.this);
 //        progressDialog.setMessage("Please Wait");
@@ -80,10 +82,25 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
 
-                    HelperCLass.voters = HelperCLass.voters.load("0xd80a7c536f214a86747636f6cefe0ccdd523f2e2",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-                    HelperCLass.candidates = HelperCLass.candidates.load("0xb39e9c7a79e7f4ba41a004ef38ac9a0f19290ba5",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-                    HelperCLass.judgment = HelperCLass.judgment.load("0x3134d9c6f3eeaac89132f2b527208fc8e7dfd0f3",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-                    HelperCLass.mainContract = HelperCLass.mainContract.load("0x60913c082767d4db671e6492a047f5adc955bb14",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                    HelperCLass.voters = HelperCLass.voters.load("0xf8d7dc55188b29190d5e4dcc894b594ab5d189ed",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                    HelperCLass.candidates = HelperCLass.candidates.load("0xbec4ffa286100049fe83e1be587023fad86805e1",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                    HelperCLass.judgment = HelperCLass.judgment.load("0x5c370326026c333850fa1929c2f6a296e6ea0e5a",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                    HelperCLass.mainContract = HelperCLass.mainContract.load("0x8cb777633e94138e6be575707746c4a248a8719e",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+
+
+                //   long unixSeconds = Long.parseLong(String.valueOf(HelperCLass.mainContract.getCurrentTime().send()));
+
+
+
+           //     HelperCLass.mainContract.setStartDate("1133").send();
+
+            //    Log.d("XXX",helperCLass.dateTime("D",HelperCLass.mainContract.getCurrentTime().send().toString()));
+
+
+
+
+                //   Log.e("YYY", String.valueOf();
+
 
 
     //                if(helperCLass.getSharedPreferences().getString("ContractAddressVoter","").equals(""))

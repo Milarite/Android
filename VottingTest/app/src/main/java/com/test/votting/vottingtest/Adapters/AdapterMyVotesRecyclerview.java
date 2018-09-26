@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.test.votting.vottingtest.HelperCLass;
+import com.test.votting.vottingtest.InternetConnection;
 import com.test.votting.vottingtest.Main2Activity;
 import com.test.votting.vottingtest.Moduls.SetGetMyVotes;
 import com.test.votting.vottingtest.R;
@@ -54,7 +55,22 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
         holder.candidateName.setText(arrayList.get(position).getName());
         holder.candidateCampign.setText(arrayList.get(position).getCampaign());
         holder.city.setText(arrayList.get(position).getCity());
-        holder.status.setText(arrayList.get(position).getStatus());
+        if(arrayList.get(position).getStatus().equals("1"))
+        {
+            holder.status.setText("Win");
+            holder.status.setTextColor(act.getResources().getColor(R.color.greenColor));
+
+        }
+        else   if(arrayList.get(position).getStatus().equals("-1"))
+        {
+            holder.status.setText("Lose");
+            holder.status.setTextColor(act.getResources().getColor(R.color.colorAccent));
+        }
+        else
+        {
+            holder.status.setText("Pending");
+            holder.status.setTextColor(act.getResources().getColor(R.color.colorPrimary));
+        }
         holder.year.setText(arrayList.get(position).getYear());
         holder.address.setText(arrayList.get(position).getNationalID());
         holder.delete.setOnClickListener(new View.OnClickListener() {
@@ -69,9 +85,14 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
 
                         progressDialog=helperCLass.getProgress("Revoking","Please wait");
                         progressDialog.show();
-                        publicPosition=position;
-                        LongOperationRevoke longOperation=new LongOperationRevoke();
-                        longOperation.execute("");
+                        if( InternetConnection.ifConnect(act)) {
+                            publicPosition=position;
+                            LongOperationRevoke longOperation=new LongOperationRevoke();
+                            longOperation.execute("");
+                        }
+                        else
+                            Toast.makeText(act, "No internet connection", Toast.LENGTH_SHORT).show();
+
 
 
                     }

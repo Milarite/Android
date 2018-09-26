@@ -37,6 +37,7 @@ public class Main2Activity extends AppCompatActivity {
         navigation.setSelectedItemId(R.id.navigation_home);
         navigation.getMenu().getItem(1).setChecked(true);
         helperCLass=new HelperCLass(Main2Activity.this);
+        helperCLass.keepScreenLight();
         Log.d("XX1",helperCLass.getSharedPreferences().getString("MyAddress",""));
         Log.d("XX2",helperCLass.getSharedPreferences().getString("nationalID",""));
 
@@ -89,6 +90,9 @@ public class Main2Activity extends AppCompatActivity {
        // return  transaction;
     }
 
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        HelperCLass.mWakeLock.release();
+    }
 }

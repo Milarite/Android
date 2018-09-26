@@ -25,8 +25,6 @@ public class SettingFragment extends Fragment {
 
     TextView nationalID,voterName,birthOfDate,city,year,signOut;
     HelperCLass helperCLass;
-    LongOperation longOperation;
-    String yearString,cityString,birthOfDateString,voterNameString,nationalIDString;
     public SettingFragment() {
         // Required empty public constructor
     }
@@ -45,6 +43,12 @@ public class SettingFragment extends Fragment {
         year=(TextView)v.findViewById(R.id.year);
         signOut=(TextView)v.findViewById(R.id.signOut);
 
+        year.setText(HelperCLass.myYear);
+        city.setText( HelperCLass.myCity);
+        birthOfDate.setText(HelperCLass.myBD);
+        voterName.setText(HelperCLass.myName);
+        nationalID.setText(helperCLass.getSharedPreferences().getString("nationalID",""));
+
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,56 +57,7 @@ public class SettingFragment extends Fragment {
 
             }
         });
-        if(HelperCLass.myYear.equals(""))
-        {
-             longOperation=new LongOperation();
-            longOperation.execute("");
-        }
-        else
-        {
-            year.setText(HelperCLass.myYear);
-            city.setText( HelperCLass.myCity);
-            birthOfDate.setText(HelperCLass.myBD);
-            voterName.setText(HelperCLass.myName);
-            nationalID.setText(helperCLass.getSharedPreferences().getString("nationalID",""));
-        }
+
         return v;
-    }
-
-    class LongOperation extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            try {
-                String voterAddress=helperCLass.getSharedPreferences().getString("MyAddress","");
-                HelperCLass.myYear=HelperCLass.mainContract.getVoterYear(voterAddress).send();
-                HelperCLass.myCity= HelperCLass.mainContract.getVoterCity(voterAddress).send();
-                HelperCLass.myBD=HelperCLass.mainContract.getVoterDateOfBirth(voterAddress).send();
-                HelperCLass.myName=HelperCLass.mainContract.getVoterName(voterAddress).send();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            year.setText(HelperCLass.myYear);
-            city.setText( HelperCLass.myCity);
-            birthOfDate.setText(HelperCLass.myBD);
-            voterName.setText(HelperCLass.myName);
-            nationalID.setText(helperCLass.getSharedPreferences().getString("nationalID",""));
-            }
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        longOperation.cancel(true);
     }
 }

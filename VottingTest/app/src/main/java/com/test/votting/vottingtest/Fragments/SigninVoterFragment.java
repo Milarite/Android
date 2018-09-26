@@ -25,11 +25,13 @@ import com.test.votting.vottingtest.RegistrationActivity;
  */
 public class SigninVoterFragment extends Fragment {
 
+    String [] times;
+
     EditText nationalID,password;
     HelperCLass helperCLass;
     SharedPreferences.Editor editor;
     TextView signin;
-    String signInStatus="0x0000000000000000000000000000000000000002",city;
+    String signInStatus="0x0000000000000000000000000000000000000002";
     ProgressDialog progressDialog;
     public SigninVoterFragment() {
         // Required empty public constructor
@@ -111,7 +113,6 @@ public class SigninVoterFragment extends Fragment {
             try {
 
                 signInStatus=HelperCLass.mainContract.checkIdAndPasswordVoter(nationalID.getText().toString(),password.getText().toString()).send();
-                city=HelperCLass.mainContract.getVoterCity(signInStatus).send();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -129,8 +130,9 @@ public class SigninVoterFragment extends Fragment {
                 editor=helperCLass.getEditor();
                 editor.putString("nationalID",nationalID.getText().toString());
                 editor.putString("MyAddress",signInStatus);
-                editor.putString("city",city);
+                editor.putString("city",HelperCLass.myCity);
                 editor.commit();
+
                 startActivity(new Intent(getActivity(), Main2Activity.class));
                 getActivity().finish();
                 progressDialog.dismiss();
@@ -142,8 +144,15 @@ public class SigninVoterFragment extends Fragment {
 
 
             try {
-
-                city=HelperCLass.mainContract.getVoterCity(signInStatus).send();
+                HelperCLass.myYear=HelperCLass.mainContract.getVoterYear(signInStatus).send();
+                HelperCLass.myCity= HelperCLass.mainContract.getVoterCity(signInStatus).send();
+                HelperCLass.myBD=HelperCLass.mainContract.getVoterDateOfBirth(signInStatus).send();
+                HelperCLass.myName=HelperCLass.mainContract.getVoterName(signInStatus).send();
+                HelperCLass.threshouldFlag=HelperCLass.mainContract.getThresholdFlag().send();
+                HelperCLass.fromDate=HelperCLass.mainContract.getStartDate().send();
+                times=HelperCLass.mainContract.getPeriod().send().split("-");
+                HelperCLass.fromTime=times[0];
+                HelperCLass.toTime=times[1];
             } catch (Exception e) {
                 e.printStackTrace();
             }

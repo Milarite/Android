@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.test.votting.vottingtest.HelperCLass;
+import com.test.votting.vottingtest.InternetConnection;
 import com.test.votting.vottingtest.Moduls.SetGetCandidatesInformations;
 import com.test.votting.vottingtest.Moduls.SetGetMyVotes;
 import com.test.votting.vottingtest.R;
@@ -23,15 +24,24 @@ import org.web3j.protocol.core.methods.request.Transaction;
 
 import java.math.BigInteger;
 import java.security.PublicKey;
+import java.sql.Time;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<AdapterCandidatesRecyclerview.MyRec> {
+    String xx1,xx2;
+    long unixSecondsDateTime;
+    boolean checkDateTimeAvailable;
     AlertDialog alertDialog;
     AlertDialog.Builder builder;
+    Long diff1,diff2;
     LayoutInflater inflater;
     SetGetMyVotes setGetMyVotes;
     HelperCLass helperCLass;
     int publicPosition;
+    String currentTime,currentDate;
     ArrayList<SetGetCandidatesInformations> arrayList = new ArrayList();
     public Activity act;
     String grantVoteStauts;
@@ -75,11 +85,16 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        publicPosition = position;
                         progressDialog = helperCLass.getProgress("Granting", "Please wait");
                         progressDialog.show();
-                        LongOperation longOperation = new LongOperation();
-                        longOperation.execute("");
+                        if( InternetConnection.ifConnect(act)) {
+                            publicPosition = position;
+                            LongOperation longOperation = new LongOperation();
+                            longOperation.execute("");
+                        }
+                        else
+                            Toast.makeText(act, "No internet connection", Toast.LENGTH_SHORT).show();
+
                     }
                 });
 
@@ -122,40 +137,91 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
     }
 
     class LongOperation extends AsyncTask<String, Void, String> {
-
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            //  Toast.makeText(act, helperCLass.getSharedPreferences().getString("MyAddress", ""), Toast.LENGTH_SHORT).show();
-
-            if (grantVoteStauts.equals("Done")) {
-                LongOperationGrantVote longOperationGrantVote = new LongOperationGrantVote();
-                longOperationGrantVote.execute("");
-                Log.d("Semsem2", grantVoteStauts);
 
 
-            } else {
+            if (checkDateTimeAvailable == true)
+            {
+                if (grantVoteStauts.equals("Done")) {
+                    LongOperationGrantVote longOperationGrantVote = new LongOperationGrantVote();
+                    longOperationGrantVote.execute("");
 
-                Log.d("Semsem", grantVoteStauts);
-                Toast.makeText(act, grantVoteStauts, Toast.LENGTH_LONG).show();
+
+                } else {
+                    Toast.makeText(act, grantVoteStauts, Toast.LENGTH_LONG).show();
+                    progressDialog.dismiss();
+                }
+        }
+
+        else
+            {
+                Toast.makeText(act, "Time out", Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
             }
-            Log.e("5ara2", helperCLass.getSharedPreferences().getString("MyAddress", ""));
-
-            Log.e("5ara", arrayList.get(publicPosition).getCandidateNationalID());
         }
 
         @Override
         protected String doInBackground(String... params) {
             try {
 
-                grantVoteStauts = HelperCLass.mainContract.checkIfVoted(
-                        helperCLass.getSharedPreferences().getString("MyAddress", ""),
-                        arrayList.get(publicPosition).getCandidateNationalID()).send();
+             //   if(HelperCLass.mainContract.getCurrentTime())
+
+
+                unixSecondsDateTime = Long.parseLong(String.valueOf(HelperCLass.mainContract.getCurrentTime().send()));
+                Date dateTime = new Date(unixSecondsDateTime*1000L);
+                currentTime=HelperCLass.simpleTimeFormat.format(dateTime);
+                currentDate=HelperCLass.simpleDateFormat.format(dateTime);
+
+                /* ........................................... */
+
+//                fromDate=HelperCLass.mainContract.getStartDate().send();
+//                times=HelperCLass.mainContract.getPeriod().send().split("-");
+//                fromTime=times[0];
+//                toTime=times[1];
+
+
+
+                /* ........................................... */
+
+//                Long diff1=HelperCLass.simpleTimeFormat.parse( toTime).getTime()-HelperCLass.simpleTimeFormat.parse( currentTime).getTime();
+//                Long diff2=HelperCLass.simpleTimeFormat.parse( toTime).getTime()-HelperCLass.simpleTimeFormat.parse( currentTime).getTime();
+
+//                 diff1=HelperCLass.simpleTimeFormat.parse( toTime).getTime() - HelperCLass.simpleTimeFormat.parse( currentTime).getTime();
+//                 diff2=HelperCLass.simpleTimeFormat.parse( currentTime).getTime() - HelperCLass.simpleTimeFormat.parse( fromTime).getTime();
+
+//                long diff1 = HelperCLass.simpleTimeFormat.parse(toTime).getTime() - HelperCLass.simpleTimeFormat.parse(currentTime).getTime();
+//
+//                long diff2 = HelperCLass.simpleTimeFormat.parse(currentTime).getTime() - HelperCLass.simpleTimeFormat.parse(fromTime).getTime();
+
+//                if(currentDate.equals(fromDate)
+//                               &&
+//                               HelperCLass.simpleTimeFormat.parse( currentTime).before(HelperCLass.simpleTimeFormat.parse(toTime))
+//                               &&
+//                               HelperCLass.simpleTimeFormat.parse( currentTime).after(HelperCLass.simpleTimeFormat.parse(fromTime)))
+
+                if(HelperCLass.threshouldFlag==true)
+                {
+                    // / HelperCLass.mainContract.getNumberOfVoters().send()
+                    int totalVotes=Integer.parseInt(String.valueOf(HelperCLass.mainContract.getTotalVotes().send()));
+                    int totalVoters=Integer.parseInt(String.valueOf(HelperCLass.mainContract.getNumberOfVoters().send()));
+                    if(Integer.parseInt( HelperCLass.mainContract.getPercentageOfVoters().send())/100
+                            <= totalVotes/totalVoters)
+                    {
+                        checkDate();
+                    }
+                }
+                else
+                    checkDate();
+
+
+
 
 
             } catch (Exception e) {
                 e.printStackTrace();
+                Log.e("Zift",e.getMessage());
             }
 
 
@@ -200,8 +266,10 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            LongOperationSendTxHashCandidate longOperationSendTxHashCandidate = new LongOperationSendTxHashCandidate();
-            longOperationSendTxHashCandidate.execute("");
+            progressDialog.dismiss();
+
+//            LongOperationSendTxHashCandidate longOperationSendTxHashCandidate = new LongOperationSendTxHashCandidate();
+//            longOperationSendTxHashCandidate.execute("");
 
 
         }
@@ -213,33 +281,6 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
 
                 HelperCLass.mainContract.addTxtHashVoter(helperCLass.getSharedPreferences().getString("MyAddress", "")
                         , transactionHash, arrayList.get(publicPosition).getCandidateNationalID()).send();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-//
-            return null;
-
-        }
-    }
-
-
-    class LongOperationSendTxHashCandidate extends AsyncTask<String, Void, String> {
-
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            progressDialog.dismiss();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            try {
-
                 HelperCLass.mainContract.addTxtHashToCandidate(arrayList.get(publicPosition).getCandidateNationalID(), transactionHash).send();
 
             } catch (Exception e) {
@@ -250,8 +291,40 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
 //
             return null;
 
-
         }
     }
+
+
+
+
+    public void checkDate()  {
+
+
+
+            try {
+                if(currentDate.equals(HelperCLass.fromDate)
+                        &&
+                        HelperCLass.simpleTimeFormat.parse(HelperCLass.toTime).after( HelperCLass.simpleTimeFormat.parse( currentTime))
+                        &&
+                        HelperCLass.simpleTimeFormat.parse(currentTime).after(  HelperCLass.simpleTimeFormat.parse(HelperCLass.fromTime))) {
+
+                    grantVoteStauts = HelperCLass.mainContract.checkIfVoted(
+                            helperCLass.getSharedPreferences().getString("MyAddress", ""),
+                            arrayList.get(publicPosition).getCandidateNationalID()).send();
+                    checkDateTimeAvailable = true;
+                }
+                else {
+
+                    checkDateTimeAvailable = false;
+                }
+            }
+
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+
+        }
 }
 
