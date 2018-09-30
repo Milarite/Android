@@ -36,7 +36,7 @@ public class RegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
         helperCLass=new HelperCLass(RegistrationActivity.this);
         helperCLass.keepScreenLight();
-
+        helperCLass.getLanguage();
         // helperCLass.getEditor().clear().commit();
         registrationTitle=(TextView)findViewById(R.id.registrationTitle);
 //        progressDialog=new ProgressDialog(RegistrationActivity.this);

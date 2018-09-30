@@ -83,9 +83,10 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        progressDialog=helperCLass.getProgress("Revoking","Please wait");
-                        progressDialog.show();
+
                         if( InternetConnection.ifConnect(act)) {
+                            progressDialog=helperCLass.getProgress("Revoking","Please wait");
+                            progressDialog.show();
                             publicPosition=position;
                             LongOperationRevoke longOperation=new LongOperationRevoke();
                             longOperation.execute("");

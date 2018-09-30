@@ -38,6 +38,8 @@ public class Main2Activity extends AppCompatActivity {
         navigation.getMenu().getItem(1).setChecked(true);
         helperCLass=new HelperCLass(Main2Activity.this);
         helperCLass.keepScreenLight();
+        helperCLass.getLanguage();
+
         Log.d("XX1",helperCLass.getSharedPreferences().getString("MyAddress",""));
         Log.d("XX2",helperCLass.getSharedPreferences().getString("nationalID",""));
 

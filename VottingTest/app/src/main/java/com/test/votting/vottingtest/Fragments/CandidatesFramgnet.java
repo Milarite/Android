@@ -14,9 +14,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import com.test.votting.vottingtest.Adapters.AdapterCandidatesRecyclerview;
 import com.test.votting.vottingtest.HelperCLass;
+import com.test.votting.vottingtest.InternetConnection;
 import com.test.votting.vottingtest.Moduls.SetGetCandidatesInformations;
 import com.test.votting.vottingtest.R;
 
@@ -81,11 +81,15 @@ public class CandidatesFramgnet extends Fragment {
             @Override
             public void onRefresh() {
 
-                longOperation = new LongOperation();
+                if( InternetConnection.ifConnect(getActivity())) {
 
-                longOperation.execute("");
-
-
+                    longOperation = new LongOperation();
+                    longOperation.execute("");
+                }
+                else {
+                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    swipeContainer.setRefreshing(false);
+                }
             }
         });
 
@@ -120,8 +124,7 @@ public class CandidatesFramgnet extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
-//            if(!swipeContainer.isRefreshing())
-//                swipeContainer.setRefreshing(true);
+
 
 
 

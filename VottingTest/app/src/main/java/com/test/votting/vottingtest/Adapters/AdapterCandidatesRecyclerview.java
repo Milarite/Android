@@ -85,9 +85,10 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        progressDialog = helperCLass.getProgress("Granting", "Please wait");
-                        progressDialog.show();
+
                         if( InternetConnection.ifConnect(act)) {
+                            progressDialog = helperCLass.getProgress("Granting", "Please wait");
+                            progressDialog.show();
                             publicPosition = position;
                             LongOperation longOperation = new LongOperation();
                             longOperation.execute("");
@@ -142,6 +143,19 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
             super.onPostExecute(s);
 
 
+
+
+
+                try {
+                    Log.e("TTT", String.valueOf(HelperCLass.simpleTimeFormat.parse(HelperCLass.toTime)));
+                    Log.e("FFF", String.valueOf(HelperCLass.simpleTimeFormat.parse(HelperCLass.fromTime)));
+                    Log.e("CCC", String.valueOf(HelperCLass.simpleTimeFormat.parse(currentTime)));
+
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
             if (checkDateTimeAvailable == true)
             {
                 if (grantVoteStauts.equals("Done")) {
@@ -181,10 +195,7 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
 //                fromTime=times[0];
 //                toTime=times[1];
 
-
-
                 /* ........................................... */
-
 //                Long diff1=HelperCLass.simpleTimeFormat.parse( toTime).getTime()-HelperCLass.simpleTimeFormat.parse( currentTime).getTime();
 //                Long diff2=HelperCLass.simpleTimeFormat.parse( toTime).getTime()-HelperCLass.simpleTimeFormat.parse( currentTime).getTime();
 
@@ -298,9 +309,6 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
 
 
     public void checkDate()  {
-
-
-
             try {
                 if(currentDate.equals(HelperCLass.fromDate)
                         &&

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.test.votting.vottingtest.Adapters.AdapterMyVotesRecyclerview;
 import com.test.votting.vottingtest.HelperCLass;
+import com.test.votting.vottingtest.InternetConnection;
 import com.test.votting.vottingtest.Moduls.SetGetMyVotes;
 import com.test.votting.vottingtest.R;
 import com.test.votting.vottingtest.Services;
@@ -109,9 +110,16 @@ public class MyVotesFragment extends Fragment {
             @Override
             public void onRefresh() {
 
-                 longOperation = new LongOperation();
+                if( InternetConnection.ifConnect(getActivity())) {
 
-                longOperation.execute("");
+                    longOperation = new LongOperation();
+
+                    longOperation.execute("");
+                }
+                else {
+                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    swipeContainer.setRefreshing(false);
+                }
             }
         });
         return v;

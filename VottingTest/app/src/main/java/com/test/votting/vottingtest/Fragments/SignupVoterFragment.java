@@ -146,6 +146,16 @@ public class SignupVoterFragment extends Fragment {
         protected String doInBackground(String... strings) {
 
             try {
+
+
+                HelperCLass.voters = HelperCLass.voters.load("0xf8d7dc55188b29190d5e4dcc894b594ab5d189ed",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                HelperCLass.candidates = HelperCLass.candidates.load("0xbec4ffa286100049fe83e1be587023fad86805e1",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                HelperCLass.judgment = HelperCLass.judgment.load("0x5c370326026c333850fa1929c2f6a296e6ea0e5a",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                HelperCLass.mainContract = HelperCLass.mainContract.load("0x8cb777633e94138e6be575707746c4a248a8719e",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+
+
+
+
                 if(HelperCLass.mainContract.checkNationalIDVoter(nationalID.getText().toString()).send())
                 signUpStatus=true;
                 else
