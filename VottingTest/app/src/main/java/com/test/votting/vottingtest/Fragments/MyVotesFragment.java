@@ -20,7 +20,6 @@ import com.test.votting.vottingtest.HelperCLass;
 import com.test.votting.vottingtest.InternetConnection;
 import com.test.votting.vottingtest.Moduls.SetGetMyVotes;
 import com.test.votting.vottingtest.R;
-import com.test.votting.vottingtest.Services;
 
 import java.math.BigInteger;
 import java.text.ParseException;

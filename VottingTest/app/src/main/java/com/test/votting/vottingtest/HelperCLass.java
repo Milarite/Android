@@ -42,8 +42,9 @@ public class HelperCLass
     public static String myCity,myYear="",myBD,myName;
 //"https://mainnet.infura.io/v3/afbac1a223484d84a7784a133d1f2010"
     //https://rinkeby.infura.io/v3/203f4b27aa6a41c6958b6c8ff6f4d729
-    public static Web3j   web3 = Web3jFactory.build(new HttpService("https://rinkeby.infura.io/v3/203f4b27aa6a41c6958b6c8ff6f4d729"));  // defaults to http://localhost:8545/
-    public static Credentials credentials = Credentials.create("4274b048585600a5732d24d055e5ca2ed6df5311b895d4ed6c1aea0019881021");
+    public static Web3j   web3 = Web3jFactory.build(new HttpService("https://rinkeby.infura.io/v3/203f4b27aa6a41c6958b6c8ff6f4d729"));// defaults to http://localhost:8545/
+    public static String privateKey="4274b048585600a5732d24d055e5ca2ed6df5311b895d4ed6c1aea0019881021";
+    public static Credentials credentials = Credentials.create(privateKey);
 
     public static ArrayList<SetGetMyVotes> arrayListMyVotes =new ArrayList<>();
     public static ArrayList<SetGetCandidatesInformations>arrayList=new ArrayList<>();

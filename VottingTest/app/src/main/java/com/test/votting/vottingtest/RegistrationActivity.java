@@ -43,8 +43,7 @@ public class RegistrationActivity extends AppCompatActivity {
 //        progressDialog.setMessage("Please Wait");
 //        if(helperCLass.getSharedPreferences().getString("ContractAddressVoter","").equals(""))
 //            progressDialog.show();
-        LongOperation longOperation=new LongOperation();
-        longOperation.execute("");
+
         fragmentManager=getFragmentManager();
         changeFragments(new SigninVoterFragment());
 
@@ -72,128 +71,7 @@ public class RegistrationActivity extends AppCompatActivity {
         }
     }
 
-    class LongOperation extends AsyncTask<String, Void, String> {
 
-        @Override
-        protected String doInBackground(String... params) {
-
-
-            try {
-
-
-
-                    HelperCLass.voters = HelperCLass.voters.load("0xf8d7dc55188b29190d5e4dcc894b594ab5d189ed",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-                    HelperCLass.candidates = HelperCLass.candidates.load("0xbec4ffa286100049fe83e1be587023fad86805e1",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-                    HelperCLass.judgment = HelperCLass.judgment.load("0x5c370326026c333850fa1929c2f6a296e6ea0e5a",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-                    HelperCLass.mainContract = HelperCLass.mainContract.load("0x8cb777633e94138e6be575707746c4a248a8719e",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-
-
-                //   long unixSeconds = Long.parseLong(String.valueOf(HelperCLass.mainContract.getCurrentTime().send()));
-
-
-
-           //     HelperCLass.mainContract.setStartDate("1133").send();
-
-            //    Log.d("XXX",helperCLass.dateTime("D",HelperCLass.mainContract.getCurrentTime().send().toString()));
-
-
-
-
-                //   Log.e("YYY", String.valueOf();
-
-
-
-    //                if(helperCLass.getSharedPreferences().getString("ContractAddressVoter","").equals(""))
-//                {
-//                    HelperCLass.voters = HelperCLass.voters.deploy(HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT).send();
-//                    helperCLass.getEditor().putString("ContractAddressVoter",HelperCLass.voters.getContractAddress());
-//                    helperCLass.getEditor().commit();
-//                    Log.d("VoterAddress",helperCLass.getSharedPreferences().getString("ContractAddressVoter",""));
-//
-//                }
-//                else
-//                {
-//                    HelperCLass.voters = HelperCLass.voters.load(helperCLass.getSharedPreferences().getString("ContractAddressVoter",""),HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-//                    Log.d("VoterAddress",helperCLass.getSharedPreferences().getString("ContractAddressVoter",""));
-//
-//                }
-//
-//
-//
-//
-//                if(helperCLass.getSharedPreferences().getString("ContractAddressCandidate","").equals(""))
-//                {
-//                    HelperCLass.candidates = HelperCLass.candidates.deploy(HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT).send();
-//                    helperCLass.getEditor().putString("ContractAddressCandidate",HelperCLass.candidates.getContractAddress());
-//                    helperCLass.getEditor().commit();
-//                    //  Toast.makeText(Main2Activity.this, String.valueOf(HelperCLass.candidates.getNationalIDArrayLength().send()), Toast.LENGTH_SHORT).show();
-//                    Log.d("MyLengthDeploy", String.valueOf(HelperCLass.candidates.getNationalIDArrayLength().send()));
-//                    Log.d("CandidateAddress",HelperCLass.candidates.getContractAddress());
-//
-//                }
-//                else
-//                {
-//                    HelperCLass.candidates = HelperCLass.candidates.load(helperCLass.getSharedPreferences().getString("ContractAddressCandidate",""),HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-//                    //      Toast.makeText(Main2Activity.this, String.valueOf(HelperCLass.candidates.getNationalIDArrayLength().send()), Toast.LENGTH_SHORT).show();
-//                    Log.d("MyLengthLod", String.valueOf(HelperCLass.candidates.getNationalIDArrayLength().send()));
-//                    Log.d("CandidateAddress",HelperCLass.candidates.getContractAddress());
-//
-//                }
-//
-//                if(helperCLass.getSharedPreferences().getString("ContractAddressJudgment","").equals(""))
-//                {
-//                    HelperCLass.judgment = HelperCLass.judgment.deploy(HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT).send();
-//                    helperCLass.getEditor().putString("ContractAddressJudgment",HelperCLass.judgment.getContractAddress());
-//                    helperCLass.getEditor().commit();
-//
-//                    Log.d("JudgmentAddress",helperCLass.getSharedPreferences().getString("ContractAddressJudgment",""));
-//
-//                }
-//                else
-//                {
-//                    HelperCLass.judgment = HelperCLass.judgment.load(helperCLass.getSharedPreferences().getString("ContractAddressJudgment",""),HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-//                    Log.d("JudgmentAddress",helperCLass.getSharedPreferences().getString("ContractAddressJudgment",""));
-//
-//                }
-//
-//
-//                if(helperCLass.getSharedPreferences().getString("ContractAddressMain","").equals(""))
-//                {
-//
-//                    HelperCLass.mainContract = HelperCLass.mainContract.deploy(HelperCLass.web3,HelperCLass.credentials,
-//                            ManagedTransaction.GAS_PRICE,
-//                            Contract.GAS_LIMIT,
-//                            helperCLass.getSharedPreferences().getString("ContractAddressCandidate","")
-//                            ,helperCLass.getSharedPreferences().getString("ContractAddressVoter","")
-//                            ,helperCLass.getSharedPreferences().getString("ContractAddressJudgment","")).send();
-//
-//
-//                    helperCLass.getEditor().putString("ContractAddressMain",HelperCLass.judgment.getContractAddress());
-//                    helperCLass.getEditor().commit();
-//
-//                    Log.d("MainAddress",helperCLass.getSharedPreferences().getString("ContractAddressMain",""));
-//
-//                }
-//                else
-//                {
-//                    HelperCLass.mainContract = HelperCLass.mainContract.load(helperCLass.getSharedPreferences().getString("ContractAddressMain",""),HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-//                    Log.d("MainAddress",helperCLass.getSharedPreferences().getString("ContractAddressMain",""));
-//
-//                }
-
-                //      Log.d("Rajai", String.valueOf(test.getCounter().send()));
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("MyExcError",e.getMessage());
-                //    Toast.makeText(Main2Activity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-
-         //   progressDialog.dismiss();
-            return null;
-        }
-
-    }
 
     @Override
     public void onBackPressed() {

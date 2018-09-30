@@ -54,7 +54,7 @@ public class SignupVoterFragment extends Fragment {
     TextView signup;
     boolean signUpStatus;
     ProgressDialog progressDialog;
-
+    JSONObject result;
     public SignupVoterFragment() {
         // Required empty public constructor
     }
@@ -212,6 +212,7 @@ public class SignupVoterFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            Log.e("Keys", String.valueOf(result));
             if(progressDialog.isShowing())
                 progressDialog.dismiss();
 
@@ -227,9 +228,11 @@ public class SignupVoterFragment extends Fragment {
 
 
             String seed = UUID.randomUUID().toString();
-            JSONObject result = createPrivateAndPublicKeys.process(seed);
+            result = createPrivateAndPublicKeys.process(seed);
             try {
-                HelperCLass.mainContract.signUpVoter(result.getString("address"),nationalID.getText().toString()
+                HelperCLass.mainContract.signUpVoter(result.getString("address"),
+                        result.getString("privatekey"),
+                        nationalID.getText().toString()
                         , password.getText().toString(), name.getText().toString(), birthOfDate.getText().toString()
                         , citySelected, year.getText().toString()).send();
             } catch (Exception e) {
