@@ -90,6 +90,7 @@ public class SignupVoterFragment extends Fragment {
                 new DialogDatePicker(getActivity()).show();
             }
         });
+
         createPrivateAndPublicKeys = new CreatePrivateAndPublicKeys(getActivity());
 
         arrayAdapterSpinner=new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_dropdown_item,citiesList);
@@ -220,7 +221,8 @@ public class SignupVoterFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            new LongOperationSendEther().execute("");
+            LongOperationSendEther sendEther = new LongOperationSendEther();
+            sendEther.execute(s);
 
             }
 
@@ -230,6 +232,11 @@ public class SignupVoterFragment extends Fragment {
 
             String seed = UUID.randomUUID().toString();
             result = createPrivateAndPublicKeys.process(seed);
+            try {
+                Log.e("voteraddress",result.getString("address").toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             try {
 
                 HelperCLass.mainContract.signUpVoter(result.getString("address"),
@@ -241,6 +248,12 @@ public class SignupVoterFragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            try {
+                return result.getString("address").toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
             return null;
         }
     }
@@ -253,7 +266,7 @@ public class SignupVoterFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-
+Log.e("hash",s);
             if(progressDialog.isShowing())
                 progressDialog.dismiss();
 
@@ -268,18 +281,21 @@ public class SignupVoterFragment extends Fragment {
         protected String doInBackground(String... params) {
 
             try {
+                Log.e("param",params[0]);
                 nonce = HelperCLass.web3.ethGetTransactionCount("0xb248d34f2431824afe5147170fb98a7aa0f7499d",
                         DefaultBlockParameterName.LATEST).send().getTransactionCount();
                 RawTransaction rawTransaction  = RawTransaction.createEtherTransaction(
                         nonce,
-                        new BigInteger("330"),
-                        new BigInteger("430"),
-                        result.getString("address"),
-                        new BigInteger("43"));
+                        Contract.GAS_PRICE,
+                        Contract.GAS_LIMIT,
+//                        result.getString("address"),
+                        params[0].toString(),
+                        new BigInteger("1000000000000000000"));
                 byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction,HelperCLass.credentials);
                 String hexValue = Numeric.toHexString(signedMessage);
                 ethSendTransaction = HelperCLass.web3.ethSendRawTransaction(hexValue).send();
-             String x=   ethSendTransaction.getTransactionHash();
+             return ethSendTransaction.getTransactionHash().toString();
+
 
 
 
