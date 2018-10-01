@@ -43,7 +43,11 @@ public class HelperCLass
 //"https://mainnet.infura.io/v3/afbac1a223484d84a7784a133d1f2010"
     //https://rinkeby.infura.io/v3/203f4b27aa6a41c6958b6c8ff6f4d729
     public static Web3j   web3 = Web3jFactory.build(new HttpService("https://rinkeby.infura.io/v3/203f4b27aa6a41c6958b6c8ff6f4d729"));// defaults to http://localhost:8545/
-    public static String privateKey="4274b048585600a5732d24d055e5ca2ed6df5311b895d4ed6c1aea0019881021";
+    public static String privateKey="4274b048585600a5732d24d055e5ca2ed6df5311b895d4ed6c1aea0019881021"
+            ,mainAddress="0xf21fe27e0721423577c46cd649970a15358a9726"
+            ,voterAddress="0xd1dcbeb004033102e5d3b5ba78f6cf75d0fe2590"
+            ,judgmentAddress="0x46b4468a764349f3b37147e0675bc5dcbd234671"
+            ,candidateAddress="0xdb6cc19deb7abb73d062a328512e95659f306da9";
     public static Credentials credentials = Credentials.create(privateKey);
 
     public static ArrayList<SetGetMyVotes> arrayListMyVotes =new ArrayList<>();

@@ -25,22 +25,31 @@ import com.test.votting.vottingtest.HelperCLass;
 import com.test.votting.vottingtest.InternetConnection;
 import com.test.votting.vottingtest.R;
 import com.test.votting.vottingtest.RegistrationActivity;
+import com.test.votting.vottingtest.SendEth;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.web3j.abi.datatypes.Bool;
+import org.web3j.crypto.RawTransaction;
+import org.web3j.crypto.TransactionEncoder;
+import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.tx.Contract;
 import org.web3j.tx.ManagedTransaction;
+import org.web3j.utils.Numeric;
 
+import java.math.BigInteger;
 import java.util.UUID;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SignupVoterFragment extends Fragment {
-    Exception ee;
+    SendEth sendEth;
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
+    BigInteger nonce;
+    EthSendTransaction ethSendTransaction;
     public static TextView birthOfDate;
     EditText nationalID, password, name, year;
     Spinner spinnerCity;
@@ -48,7 +57,6 @@ public class SignupVoterFragment extends Fragment {
     String citySelected="";
     String citiesList[]={"Amman","Zarqa","Irbid"};
     HelperCLass helperCLass;
-    SharedPreferences.Editor editor;
     CreatePrivateAndPublicKeys createPrivateAndPublicKeys;
     RegistrationActivity registrationActivity;
     TextView signup;
@@ -65,9 +73,7 @@ public class SignupVoterFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_signup_voter, container, false);
-
       RegistrationActivity.registrationTitle.setText("SIGN-UP");
-
         helperCLass=new HelperCLass(getActivity());
         fragmentManager=getFragmentManager();
         signup=(TextView)v.findViewById(R.id.signup);
@@ -148,10 +154,11 @@ public class SignupVoterFragment extends Fragment {
             try {
 
 
-                HelperCLass.voters = HelperCLass.voters.load("0xf8d7dc55188b29190d5e4dcc894b594ab5d189ed",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-                HelperCLass.candidates = HelperCLass.candidates.load("0xbec4ffa286100049fe83e1be587023fad86805e1",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-                HelperCLass.judgment = HelperCLass.judgment.load("0x5c370326026c333850fa1929c2f6a296e6ea0e5a",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-                HelperCLass.mainContract = HelperCLass.mainContract.load("0x8cb777633e94138e6be575707746c4a248a8719e",HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                HelperCLass.voters = HelperCLass.voters.load(HelperCLass.voterAddress,HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                HelperCLass.candidates = HelperCLass.candidates.load(HelperCLass.candidateAddress,HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                HelperCLass.judgment = HelperCLass.judgment.load(HelperCLass.judgmentAddress,HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+                HelperCLass.mainContract = HelperCLass.mainContract.load(HelperCLass.mainAddress,HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+
 
 
 
@@ -212,15 +219,9 @@ public class SignupVoterFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.e("Keys", String.valueOf(result));
-            if(progressDialog.isShowing())
-                progressDialog.dismiss();
 
-                  Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
-                transaction=fragmentManager.beginTransaction();
-                transaction.replace(R.id.linearRegitration,new SigninVoterFragment());
-                transaction.addToBackStack("");
-                transaction.commit();
+            new LongOperationSendEther().execute("");
+
             }
 
         @Override
@@ -230,15 +231,65 @@ public class SignupVoterFragment extends Fragment {
             String seed = UUID.randomUUID().toString();
             result = createPrivateAndPublicKeys.process(seed);
             try {
+
                 HelperCLass.mainContract.signUpVoter(result.getString("address"),
                         result.getString("privatekey"),
                         nationalID.getText().toString()
                         , password.getText().toString(), name.getText().toString(), birthOfDate.getText().toString()
                         , citySelected, year.getText().toString()).send();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
         }
+    }
+
+
+
+    class LongOperationSendEther extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+
+            if(progressDialog.isShowing())
+                progressDialog.dismiss();
+
+            Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
+            transaction=fragmentManager.beginTransaction();
+            transaction.replace(R.id.linearRegitration,new SigninVoterFragment());
+            transaction.addToBackStack("");
+            transaction.commit();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            try {
+                nonce = HelperCLass.web3.ethGetTransactionCount("0xb248d34f2431824afe5147170fb98a7aa0f7499d",
+                        DefaultBlockParameterName.LATEST).send().getTransactionCount();
+                RawTransaction rawTransaction  = RawTransaction.createEtherTransaction(
+                        nonce,
+                        new BigInteger("330"),
+                        new BigInteger("430"),
+                        result.getString("address"),
+                        new BigInteger("43"));
+                byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction,HelperCLass.credentials);
+                String hexValue = Numeric.toHexString(signedMessage);
+                ethSendTransaction = HelperCLass.web3.ethSendRawTransaction(hexValue).send();
+             String x=   ethSendTransaction.getTransactionHash();
+
+
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+
     }
 }
