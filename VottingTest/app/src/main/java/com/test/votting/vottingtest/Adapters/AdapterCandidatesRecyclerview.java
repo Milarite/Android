@@ -212,7 +212,7 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
 //                               &&
 //                               HelperCLass.simpleTimeFormat.parse( currentTime).after(HelperCLass.simpleTimeFormat.parse(fromTime)))
 
-                if(HelperCLass.threshouldFlag==true)
+                if(!HelperCLass.threshouldFlag)
                 {
                     // / HelperCLass.mainContract.getNumberOfVoters().send()
                     int totalVotes=Integer.parseInt(String.valueOf(HelperCLass.mainContract.getTotalVotes().send()));

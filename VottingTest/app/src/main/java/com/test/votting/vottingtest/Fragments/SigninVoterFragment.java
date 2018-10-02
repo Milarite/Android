@@ -115,12 +115,13 @@ public class SigninVoterFragment extends Fragment {
 
 
             try {
+
+
+
                 HelperCLass.voters = HelperCLass.voters.load(HelperCLass.voterAddress,HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
                 HelperCLass.candidates = HelperCLass.candidates.load(HelperCLass.candidateAddress,HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
                 HelperCLass.judgment = HelperCLass.judgment.load(HelperCLass.judgmentAddress,HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
                 HelperCLass.mainContract = HelperCLass.mainContract.load(HelperCLass.mainAddress,HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-
-
 
                 signInStatus=HelperCLass.mainContract.checkIdAndPasswordVoter(nationalID.getText().toString(),password.getText().toString()).send();
             } catch (Exception e) {
@@ -179,10 +180,10 @@ public class SigninVoterFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            HelperCLass.voters = HelperCLass.voters.load(HelperCLass.voterAddress,HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-            HelperCLass.candidates = HelperCLass.candidates.load(HelperCLass.candidateAddress,HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-            HelperCLass.judgment = HelperCLass.judgment.load(HelperCLass.judgmentAddress,HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
-            HelperCLass.mainContract = HelperCLass.mainContract.load(HelperCLass.mainAddress,HelperCLass.web3,HelperCLass.credentials, ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+            HelperCLass.voters = HelperCLass.voters.load(HelperCLass.voterAddress,HelperCLass.web3,HelperCLass.ChangeCredentials(s), ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+            HelperCLass.candidates = HelperCLass.candidates.load(HelperCLass.candidateAddress,HelperCLass.web3,HelperCLass.ChangeCredentials(s), ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+            HelperCLass.judgment = HelperCLass.judgment.load(HelperCLass.judgmentAddress,HelperCLass.web3,HelperCLass.ChangeCredentials(s), ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
+            HelperCLass.mainContract = HelperCLass.mainContract.load(HelperCLass.mainAddress,HelperCLass.web3,HelperCLass.ChangeCredentials(s), ManagedTransaction.GAS_PRICE, Contract.GAS_LIMIT);
 
 
             startActivity(new Intent(getActivity(), Main2Activity.class));
@@ -201,7 +202,7 @@ public class SigninVoterFragment extends Fragment {
             }
 
 
-            return null;
+            return HelperCLass.privateKey;
         }
 
     }

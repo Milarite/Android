@@ -109,4 +109,10 @@ public class HelperCLass
                 activity.getResources().getDisplayMetrics());
     }
 
+    public static Credentials ChangeCredentials(String pk){
+        credentials = Credentials.create(pk);
+
+        return credentials;
+    }
+
 }
