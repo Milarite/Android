@@ -29,13 +29,15 @@ public class DialogDatePicker  extends Dialog {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_datepicker);
-         simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy");
+        simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy");
         yes = (TextView) findViewById(R.id.yes);
         no = (TextView) findViewById(R.id.no);
         datePickerBD=(DatePicker)findViewById(R.id.datePickerBD);
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 SignupVoterFragment.birthOfDate.setText(datePickerBD.getDayOfMonth() +"/"+ String.valueOf(Integer.parseInt(String.valueOf(datePickerBD.getMonth()))+1) +"/"+ datePickerBD.getYear() );
                 dismiss();
             }

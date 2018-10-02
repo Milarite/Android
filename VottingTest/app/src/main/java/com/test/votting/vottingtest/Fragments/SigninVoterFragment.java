@@ -147,7 +147,6 @@ public class SigninVoterFragment extends Fragment {
             Log.e("fromTime",HelperCLass.fromTime);
             Log.e("toTime",HelperCLass.toTime);
             new LongOperationgetPrivateKey().execute("");
-
         }
 
         @Override
