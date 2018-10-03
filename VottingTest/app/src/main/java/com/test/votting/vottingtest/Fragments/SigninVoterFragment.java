@@ -143,9 +143,7 @@ public class SigninVoterFragment extends Fragment {
                 editor.putString("MyAddress",signInStatus);
                 editor.putString("city",HelperCLass.myCity);
                 editor.commit();
-            Log.e("fromDate",HelperCLass.fromDate);
-            Log.e("fromTime",HelperCLass.fromTime);
-            Log.e("toTime",HelperCLass.toTime);
+
             new LongOperationgetPrivateKey().execute("");
         }
 
