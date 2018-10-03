@@ -290,7 +290,7 @@ Log.e("hash",s);
                         Contract.GAS_LIMIT,
 //                        result.getString("address"),
                         params[0].toString(),
-                        new BigInteger("1000000000000000000"));
+                        new BigInteger("500000000000000000"));
                 byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction,HelperCLass.credentials);
                 String hexValue = Numeric.toHexString(signedMessage);
                 ethSendTransaction = HelperCLass.web3.ethSendRawTransaction(hexValue).send();

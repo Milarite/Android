@@ -31,10 +31,10 @@ public class SendEth {
         //Constructing transaction
         RawTransaction rawTransaction  = RawTransaction.createEtherTransaction(
                 new BigInteger(String.valueOf(nonce.intValue()+1)),
-                new BigInteger("1000000000"),
+                new BigInteger("500000000"),
                 new BigInteger("210000"),
                 voterAddress,
-                new BigInteger("1000000000")
+                new BigInteger("500000000")
         );
 
         //Signing transaction
