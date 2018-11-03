@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">تصويت</string>
+    <string name="title_notifications">Notifications</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="SIGNUP">انشاء حساب</string>
+    <string name="SIGNIN">تسجيل دخول</string>
+    <string name="Vote">تصويت</string>
+    <string name="No">لا</string>
+    <string name="Yes">نعم</string>
+    <string name="NationalID">رقم الوطني</string>
+    <string name="VoterName">الاسم</string>
+    <string name="Birthofdate">تاريخ الميلاد</string>
+    <string name="City">المدينه</string>
+    <string name="Year">السنه</string>
+    <string name="SIGNOUT">تسجيل خروج</string>
+    <string name="Password">كلمه المرور</string>
+    <string name="MyVotes">أصواتي</string>
+    <string name="Home">الرئيسيه</string>
+    <string name="Profile">ملفي</string>
+    <string name="Win">ناجح</string>
+    <string name="Pending">قيد الانتظار</string>
+    <string name="Lang">English</string>
+    <string name="Lose">لم ينجح</string>
+    <string name="TimeOut">نفذ الوقت</string>
+    <string name="Successful">مت العمليه بنجاح</string>
+    <string name="Youhavebeenvoted">لقد تم التصويت</string>
+    <string name="Close">اغلاق</string>
+    <string name="Revokevote">سحب الصوت</string>
+    <string name="Areyousureyouwanttorevokeyourvotefrom">هل أنت متأكد من  سحب صوتك من </string>
+    <string name="Areyousureyouwanttovoteto">هل أنت متأكد من التصويت الى </string>
+
+    <string name="Pleasewait">الرجاء الانتظار</string>
+    <string name="Revoking">تتم عمليه سحب الصوت</string>
+    <string name="Nointernetconnection">لا يوجد اتصال بالإنترنت</string>
+    <string name="Signin">تسجيل الدخول</string>
+    <string name="NationalIDisrequired">ادخل الرقم الوطني</string>
+    <string name="Passwordisrequired">ادخل كلمه المرور</string>
+    <string name="LoginFailed">خطأ في تسجيل الدخول</string>
+    <string name="Nameisrequired">ادخل الاسم</string>
+    <string name="Birthofdateisrequired">ادخل تاريخ الميلاد</string>
+    <string name="Yearisrequired">ادخل السنه</string>
+    <string name="Signup">انشاء حساب</string>
+    <string name="Thisnationalidisexist">رقم الهويه مسجله من قبل</string>
+
+    <string name="LoadCites">يرجى تحميل المدن</string>
+    <string name="Nointernetconnectionpleasereloadthecities">لا يوجد اتصال بالانترنت يرجى تحميل المدن</string>
+    <string name="Reload">اعاده تحميل</string>
+
+
+</resources>

@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_gravity="center"
+    android:background="@color/whiteColor"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <DatePicker
@@ -25,20 +27,23 @@
             android:paddingLeft="20dp"
             android:background="#e2e1e1"
             android:layout_marginRight="1dp"
+            android:layout_marginLeft="1dp"
             android:id="@+id/no"
             android:textColor="@color/colorAccent"
-            android:text="No "/>
+            android:text="@string/No"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="1dp"
             android:paddingRight="20dp"
             android:paddingLeft="20dp"
             android:background="#e2e1e1"
             android:id="@+id/yes"
             android:textColor="@color/blackColor"
-            android:text="Yes"/>
+            android:text="@string/Yes"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -38,19 +38,9 @@ public class Main2Activity extends AppCompatActivity {
         navigation.getMenu().getItem(1).setChecked(true);
         helperCLass=new HelperCLass(Main2Activity.this);
         helperCLass.keepScreenLight();
-        helperCLass.getLanguage();
 
-        Log.d("XX1",helperCLass.getSharedPreferences().getString("MyAddress",""));
-        Log.d("XX2",helperCLass.getSharedPreferences().getString("nationalID",""));
-
+        helperCLass.getLanguage(helperCLass.getSharedPreferences().getString("Lang",""));
         changeFragments(new CandidatesFramgnet());
-//        try {
-//            Toast.makeText(Main2Activity.this, String.valueOf(HelperCLass.candidates.getNationalIDArrayLength().send()), Toast.LENGTH_SHORT).show();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            Toast.makeText(Main2Activity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-//            Log.d("ErrorError",e.getMessage());
-//        }
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -86,8 +76,7 @@ public class Main2Activity extends AppCompatActivity {
     public void changeFragments(Fragment fragment)
     {
         transaction=fragmentManager.beginTransaction();
-        transaction.add(R.id.mainFramlayout,fragment);
-        transaction.addToBackStack("");
+        transaction.replace(R.id.mainFramlayout,fragment);
         transaction.commit();
        // return  transaction;
     }

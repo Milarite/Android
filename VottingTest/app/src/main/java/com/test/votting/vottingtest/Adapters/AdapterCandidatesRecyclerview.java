@@ -7,10 +7,12 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,9 +38,7 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
     boolean checkDateTimeAvailable;
     AlertDialog alertDialog;
     AlertDialog.Builder builder;
-    Long diff1,diff2;
     LayoutInflater inflater;
-    SetGetMyVotes setGetMyVotes;
     HelperCLass helperCLass;
     int publicPosition;
     String currentTime,currentDate;
@@ -80,26 +80,26 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
 
                 //    if (arrayList.get(position).getStatusVoted() == 0) {
                 builder = new AlertDialog.Builder(act);
-                builder.setTitle("Grant vote");
-                builder.setMessage("Are you sure you want to grant your vote to " + arrayList.get(position).getName());
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                builder.setTitle(act.getResources().getString(R.string.Vote));
+                builder.setMessage(act.getResources().getString(R.string.Areyousureyouwanttovoteto) + arrayList.get(position).getName());
+                builder.setPositiveButton(act.getResources().getString(R.string.Yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
                         if( InternetConnection.ifConnect(act)) {
-                            progressDialog = helperCLass.getProgress("Granting", "Please wait");
+                            progressDialog = helperCLass.getProgress(act.getResources().getString(R.string.Voting), act.getResources().getString(R.string.Pleasewait));
                             progressDialog.show();
                             publicPosition = position;
                             LongOperation longOperation = new LongOperation();
                             longOperation.execute("");
                         }
                         else
-                            Toast.makeText(act, "No internet connection", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(act, act.getResources().getString(R.string.Nointernetconnection), Toast.LENGTH_SHORT).show();
 
                     }
                 });
 
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(act.getResources().getString(R.string.No), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         alertDialog.dismiss();
@@ -134,6 +134,12 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
 
             candidateImage = (ImageView) v.findViewById(R.id.candidateImage);
 
+            if(helperCLass.getSharedPreferences().getString("Lang","").equals("ar")) {
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.gravity = Gravity.LEFT;
+                params.leftMargin = 10;
+                grantYourVote.setLayoutParams(params);
+            }
         }
     }
 
@@ -171,7 +177,7 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
 
         else
             {
-                Toast.makeText(act, "Time out", Toast.LENGTH_LONG).show();
+                Toast.makeText(act, act.getResources().getString(R.string.TimeOut), Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
             }
         }
@@ -279,10 +285,21 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
             super.onPostExecute(s);
             progressDialog.dismiss();
 
+            builder=new AlertDialog.Builder(act);
+            builder.setTitle(act.getResources().getString(R.string.Successful));
+            builder.setMessage(act.getResources().getString(R.string.Youhavebeenvoted));
+            builder.setCancelable(false);
+            builder.setPositiveButton(act.getResources().getString(R.string.Close), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    alertDialog.dismiss();
+                }
+            });
+            alertDialog=builder.create();
+            alertDialog.show();
+            //Rajai
 //            LongOperationSendTxHashCandidate longOperationSendTxHashCandidate = new LongOperationSendTxHashCandidate();
 //            longOperationSendTxHashCandidate.execute("");
-
-
         }
 
         @Override

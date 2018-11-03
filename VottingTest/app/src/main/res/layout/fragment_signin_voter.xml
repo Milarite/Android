@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/blackColor"
     tools:context=".Fragments.SigninVoterFragment">
 
 
@@ -30,11 +31,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:gravity="center_vertical"
+                android:textColor="@color/greenColor"
                 android:layout_weight="1"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:textStyle="bold"
-                android:text="National ID"/>
+                android:text="@string/NationalID"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -42,10 +44,11 @@
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:textStyle="bold"
+                android:textColor="@color/greenColor"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:gravity="center_vertical"
-                android:text="Password"/>
+                android:text="@string/Password"/>
         </LinearLayout>
 
 
@@ -55,6 +58,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:paddingTop="5dp"
+            android:gravity="center"
             android:paddingBottom="5dp"
             android:orientation="vertical">
 
@@ -66,11 +70,11 @@
                 android:paddingBottom="5dp"
                 android:id="@+id/nationalID"
                 android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:maxLines="1"
                 android:background="@drawable/edittext_login"
                 android:textSize="14dp"
-                android:textColorHint="@color/whiteColor"
-                android:textColor="@color/whiteColor"
+                android:textColor="@color/blackColor"
                 />
             <EditText
                 android:layout_width="match_parent"
@@ -79,10 +83,10 @@
                 android:id="@+id/password"
                 android:maxLines="1"
                 android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:background="@drawable/edittext_login"
                 android:textSize="14dp"
-                android:textColor="@color/whiteColor"
-                android:textColorHint="@color/whiteColor"
+                android:textColor="@color/blackColor"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:inputType="textPassword"
@@ -94,16 +98,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:id="@+id/signin"
         android:paddingBottom="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_margin="10dp"
         android:paddingTop="10dp"
         android:textColor="@color/whiteColor"
         android:textStyle="bold"
-        android:layout_gravity="center"
+        android:layout_gravity="right"
         android:textSize="16dp"
-        android:background="@color/blueColor"
-        android:text="SIGN-IN"/>
+        android:background="@drawable/vote_text"
+        android:text="@string/SIGNIN"/>
+
+
 </LinearLayout>

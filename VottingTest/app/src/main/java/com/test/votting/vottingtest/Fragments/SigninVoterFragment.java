@@ -8,13 +8,17 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
 import com.test.votting.vottingtest.HelperCLass;
 import com.test.votting.vottingtest.InternetConnection;
 import com.test.votting.vottingtest.Main2Activity;
@@ -41,29 +45,35 @@ public class SigninVoterFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_signin_voter, container, false);
 
-
-        RegistrationActivity.registrationTitle.setText("SIGN-IN");
+        RegistrationActivity.registrationTitle.setText(getActivity().getResources().getString(R.string.SIGNIN));
 
         signin=(TextView)v.findViewById(R.id.signin);
 
         helperCLass=new HelperCLass(getActivity());
+        if(helperCLass.getSharedPreferences().getString("Lang","").equals("ar")) {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.gravity = Gravity.LEFT;
+            params.leftMargin=60;
+            signin.setLayoutParams(params);
+
+        }
+
         nationalID=(EditText)v.findViewById(R.id.nationalID);
         password=(EditText)v.findViewById(R.id.password);
-        helperCLass.getEditor().clear().commit();
+     //   helperCLass.getEditor().clear().commit();
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if( InternetConnection.ifConnect(getActivity()))
                     loginFunc();
                 else
-                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.Nointernetconnection), Toast.LENGTH_SHORT).show();
             }
         });
         HelperCLass.myYear="";
@@ -76,11 +86,11 @@ public class SigninVoterFragment extends Fragment {
 
     public void loginFunc() {
         if(nationalID.getText().toString().isEmpty())
-            Toast.makeText(getActivity(), "NationalID is required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),  getActivity().getResources().getString(R.string.NationalIDisrequired), Toast.LENGTH_SHORT).show();
         else if(password.getText().toString().isEmpty())
-            Toast.makeText(getActivity(), "Password is required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.Passwordisrequired), Toast.LENGTH_SHORT).show();
         else {
-            progressDialog=helperCLass.getProgress("Signin","Please wait");
+            progressDialog=helperCLass.getProgress(getActivity().getResources().getString(R.string.Signin),getActivity().getResources().getString(R.string.Pleasewait));
             progressDialog.show();
             LongOperationCheck longOperation=new LongOperationCheck();
             longOperation.execute("");
@@ -99,7 +109,7 @@ public class SigninVoterFragment extends Fragment {
 
             if(signInStatus.equals("0x0000000000000000000000000000000000000002"))
             {
-                Toast.makeText(getActivity(), "Login Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.LoginFailed), Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
 
             }

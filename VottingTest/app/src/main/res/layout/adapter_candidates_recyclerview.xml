@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_margin="5dp"
-    android:background="@color/whiteColor"
+    android:background="@color/blueGrayColor"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="2dp"
         android:src="@drawable/user"
+        app:civ_circle_background_color="@color/whiteColor"
         android:id="@+id/candidateImage"
         />
     <LinearLayout
@@ -39,14 +40,16 @@
             android:layout_height="wrap_content"
             android:lineSpacingMultiplier="1.5"
             android:id="@+id/candidateCampign"
-            android:textColor="@color/blueGrayColor"
+            android:textColor="@color/colorAccent"
             android:textSize="13dp"
+            android:gravity="right"
             android:text="خير الناس انفعهم للناس ، الوطن للجميع والجميع للوطن ، القضية الفلسطينية اولوية ،وباسمكم نتكلم ومن اجلكم نعمل ، بصوتك يبدأ التغيير"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
             android:textSize="16dp"
+            android:gravity="right"
+            android:textStyle="bold"
             android:id="@+id/city"
             android:layout_marginTop="5dp"
             android:text="Amman"/>
@@ -57,13 +60,13 @@
     android:layout_height="wrap_content"
     android:layout_gravity="right"
     android:background="@drawable/vote_text"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
+    android:paddingTop="14dp"
+    android:paddingBottom="14dp"
     android:paddingRight="20dp"
     android:paddingLeft="20dp"
     android:id="@+id/grantYourVote"
     android:layout_margin="3dp"
     android:textColor="@color/whiteColor"
-    android:text="Vote"/>
+    android:text="@string/Vote"/>
 
 </LinearLayout>

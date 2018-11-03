@@ -57,18 +57,18 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
         holder.city.setText(arrayList.get(position).getCity());
         if(arrayList.get(position).getStatus().equals("1"))
         {
-            holder.status.setText("Win");
+            holder.status.setText(act.getResources().getString(R.string.Win));
             holder.status.setTextColor(act.getResources().getColor(R.color.greenColor));
 
         }
         else   if(arrayList.get(position).getStatus().equals("-1"))
         {
-            holder.status.setText("Lose");
+            holder.status.setText(act.getResources().getString(R.string.Lose));
             holder.status.setTextColor(act.getResources().getColor(R.color.colorAccent));
         }
         else
         {
-            holder.status.setText("Pending");
+            holder.status.setText(act.getResources().getString(R.string.Pending));
             holder.status.setTextColor(act.getResources().getColor(R.color.colorPrimary));
         }
         holder.year.setText(arrayList.get(position).getYear());
@@ -77,28 +77,28 @@ public class AdapterMyVotesRecyclerview extends RecyclerView.Adapter<AdapterMyVo
             @Override
             public void onClick(View v) {
                 builder=new AlertDialog.Builder(act);
-                builder.setTitle("Revoke vote");
-                builder.setMessage("Are you sure you want to revoke this vote from "+arrayList.get(position).getName());
+                builder.setTitle(act.getResources().getString(R.string.Revokevote));
+                builder.setMessage(act.getResources().getString(R.string.Areyousureyouwanttorevokeyourvotefrom)+arrayList.get(position).getName());
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
 
                         if( InternetConnection.ifConnect(act)) {
-                            progressDialog=helperCLass.getProgress("Revoking","Please wait");
+                            progressDialog=helperCLass.getProgress(act.getResources().getString(R.string.Revoking),act.getResources().getString(R.string.Pleasewait));
                             progressDialog.show();
                             publicPosition=position;
                             LongOperationRevoke longOperation=new LongOperationRevoke();
                             longOperation.execute("");
                         }
                         else
-                            Toast.makeText(act, "No internet connection", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(act, act.getResources().getString(R.string.Nointernetconnection), Toast.LENGTH_SHORT).show();
 
 
 
                     }
                 });
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(act.getResources().getString(R.string.No), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         alertDialog.dismiss();

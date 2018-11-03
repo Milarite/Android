@@ -8,17 +8,25 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.test.votting.vottingtest.CreatePrivateAndPublicKeys;
 import com.test.votting.vottingtest.DialogDatePicker;
 import com.test.votting.vottingtest.HelperCLass;
@@ -45,6 +53,8 @@ import java.util.UUID;
  * A simple {@link Fragment} subclass.
  */
 public class SignupVoterFragment extends Fragment {
+    Snackbar snackbar;
+    JsonObjectRequest jsonObjectRequest;
     SendEth sendEth;
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
@@ -54,8 +64,6 @@ public class SignupVoterFragment extends Fragment {
     EditText nationalID, password, name, year;
     Spinner spinnerCity;
     ArrayAdapter arrayAdapterSpinner;
-    String citySelected="";
-    String citiesList[]={"Amman","Zarqa","Irbid"};
     HelperCLass helperCLass;
     CreatePrivateAndPublicKeys createPrivateAndPublicKeys;
     RegistrationActivity registrationActivity;
@@ -63,6 +71,7 @@ public class SignupVoterFragment extends Fragment {
     boolean signUpStatus;
     ProgressDialog progressDialog;
     JSONObject result;
+    View v;
     public SignupVoterFragment() {
         // Required empty public constructor
     }
@@ -72,8 +81,8 @@ public class SignupVoterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_signup_voter, container, false);
-      RegistrationActivity.registrationTitle.setText("SIGN-UP");
+         v= inflater.inflate(R.layout.fragment_signup_voter, container, false);
+        RegistrationActivity.registrationTitle.setText(getActivity().getResources().getString(R.string.SIGNUP));
         helperCLass=new HelperCLass(getActivity());
         fragmentManager=getFragmentManager();
         signup=(TextView)v.findViewById(R.id.signup);
@@ -92,31 +101,35 @@ public class SignupVoterFragment extends Fragment {
         });
 
         createPrivateAndPublicKeys = new CreatePrivateAndPublicKeys(getActivity());
+        if(!HelperCLass.arrayListSpinnerCities.isEmpty()) {
+            arrayAdapterSpinner = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, HelperCLass.arrayListSpinnerCities);
+            spinnerCity.setAdapter(arrayAdapterSpinner);
+        }
+        else {
+            if (helperCLass.getSharedPreferences().getString("Lang", "").equals("en"))
+                getCities(HelperCLass.urlIPFSEnglish);
+            else
+                getCities(HelperCLass.urlIPFSArabic);
 
-        arrayAdapterSpinner=new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_dropdown_item,citiesList);
-        spinnerCity.setAdapter(arrayAdapterSpinner);
-        citySelected=spinnerCity.getSelectedItem().toString();
+        }
 
-        spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                citySelected=citiesList[position].toLowerCase().toString();
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
 
+        if(helperCLass.getSharedPreferences().getString("Lang","").equals("ar")) {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.gravity = Gravity.LEFT;
+            params.leftMargin = 60;
+            signup.setLayoutParams(params);
+        }
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if( InternetConnection.ifConnect(getActivity()))
                     signupFunc();
                 else
-                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.Nointernetconnection), Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -125,19 +138,22 @@ public class SignupVoterFragment extends Fragment {
 
     public void signupFunc() {
         if (nationalID.getText().toString().isEmpty())
-            Toast.makeText(getActivity(), "NationalID is required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.NationalIDisrequired), Toast.LENGTH_SHORT).show();
         else if (password.getText().toString().isEmpty())
-            Toast.makeText(getActivity(), "Password is required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.Passwordisrequired), Toast.LENGTH_SHORT).show();
         else if (name.getText().toString().isEmpty())
-            Toast.makeText(getActivity(), "Name is required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),             getActivity().getResources().getString(R.string.Nameisrequired), Toast.LENGTH_SHORT).show();
         else if (birthOfDate.getText().toString().isEmpty())
-            Toast.makeText(getActivity(), "Birth of date is required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),             getActivity().getResources().getString(R.string.Birthofdateisrequired), Toast.LENGTH_SHORT).show();
 //        else if (citySelected=="Select")
 //            Toast.makeText(getActivity(), "Select city", Toast.LENGTH_SHORT).show();
         else if (year.getText().toString().isEmpty())
-            Toast.makeText(getActivity(), "Year is required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),             getActivity().getResources().getString(R.string.Yearisrequired), Toast.LENGTH_SHORT).show();
+        else if(HelperCLass.arrayListSpinnerCities.isEmpty())
+            Toast.makeText(getActivity(),             getActivity().getResources().getString(R.string.LoadCites), Toast.LENGTH_SHORT).show();
+
         else {
-          progressDialog=helperCLass.getProgress("Signup","Please wait");
+          progressDialog=helperCLass.getProgress(            getActivity().getResources().getString(R.string.Signup),getActivity().getResources().getString(R.string.Pleasewait));
           progressDialog.show();
             fragmentManager=getFragmentManager();
             LongOperationCheck longOperation=new LongOperationCheck();
@@ -189,7 +205,7 @@ public class SignupVoterFragment extends Fragment {
             }
             else if(signUpStatus==true)
             {
-                Toast.makeText(getActivity(), "This national id is exist", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),getActivity().getResources().getString(R.string.Thisnationalidisexist), Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         }
@@ -243,7 +259,7 @@ public class SignupVoterFragment extends Fragment {
                         result.getString("privatekey"),
                         nationalID.getText().toString()
                         , password.getText().toString(), name.getText().toString(), birthOfDate.getText().toString()
-                        , citySelected, year.getText().toString()).send();
+                        , spinnerCity.getSelectedItem().toString().toLowerCase(), year.getText().toString()).send();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -270,13 +286,12 @@ Log.e("hash",s);
             if(progressDialog.isShowing())
                 progressDialog.dismiss();
 
-            Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.Successful), Toast.LENGTH_SHORT).show();
             transaction=fragmentManager.beginTransaction();
             transaction.replace(R.id.linearRegitration,new SigninVoterFragment());
             transaction.addToBackStack("");
             transaction.commit();
         }
-
         @Override
         protected String doInBackground(String... params) {
 
@@ -307,5 +322,70 @@ Log.e("hash",s);
         }
 
 
+    }
+
+
+     public void getCities(String url) {
+
+        if(HelperCLass.requestQueue==null)
+            HelperCLass.requestQueue=Volley.newRequestQueue(getActivity());
+        jsonObjectRequest=new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+
+
+                    try {
+
+
+                        for(int i=0;i<response.getJSONArray("lang").length();i++)
+                        {
+                            HelperCLass.arrayListSpinnerCities.add(response.getJSONArray("lang").getString(i));
+
+                        }
+                        arrayAdapterSpinner=new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_dropdown_item,HelperCLass.arrayListSpinnerCities);
+                        spinnerCity.setAdapter(arrayAdapterSpinner);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+           snackbar=Snackbar.make(v, getActivity().getResources().getString(R.string.Nointernetconnectionpleasereloadthecities), Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction(getActivity().getResources().getString(R.string.Reload), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+
+                                if (helperCLass.getSharedPreferences().getString("Lang", "").equals("en"))
+                                    getCities(HelperCLass.urlIPFSEnglish);
+                                else
+                                    getCities(HelperCLass.urlIPFSArabic);
+
+                            }
+                        })
+                        .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ));
+
+
+
+                snackbar.show();
+            }
+        });
+       HelperCLass.requestQueue.add(jsonObjectRequest);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(jsonObjectRequest!=null)
+            jsonObjectRequest.cancel();
+        if(snackbar !=null && snackbar.isShown())
+            snackbar.dismiss();
     }
 }

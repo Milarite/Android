@@ -23,6 +23,7 @@ import com.test.votting.vottingtest.R;
 
 import java.math.BigInteger;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -116,7 +117,7 @@ public class MyVotesFragment extends Fragment {
                     longOperation.execute("");
                 }
                 else {
-                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.Nointernetconnection), Toast.LENGTH_SHORT).show();
                     swipeContainer.setRefreshing(false);
                 }
             }
@@ -134,6 +135,8 @@ public class MyVotesFragment extends Fragment {
             if(!swipeContainer.isRefreshing())
                 swipeContainer.setRefreshing(true);
 
+
+
         }
 
         @Override
@@ -141,13 +144,12 @@ public class MyVotesFragment extends Fragment {
             super.onCancelled();
             if(swipeContainer.isRefreshing())
                 swipeContainer.setRefreshing(false);
-
         }
 
         @Override
         protected String doInBackground(String... params) {
 
-
+            HelperCLass.arrayListMyVotes.clear();
 
 
             try {
@@ -230,11 +232,11 @@ public class MyVotesFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if(longOperation !=null)
+        if(!HelperCLass.arrayListMyVotes.isEmpty())
+        HelperCLass.arrayListMyVotes.clear();
+        if (longOperation != null && longOperation.getStatus() != AsyncTask.Status.FINISHED)
             longOperation.cancel(true);
 
 
-
     }
-
 }

@@ -6,7 +6,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.PowerManager;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.test.votting.vottingtest.Moduls.SetGetCandidatesInformations;
 import com.test.votting.vottingtest.Moduls.SetGetMyVotes;
 import com.test.votting.vottingtest.SolCode.Candidates;
@@ -14,6 +21,8 @@ import com.test.votting.vottingtest.SolCode.Judgment;
 import com.test.votting.vottingtest.SolCode.MainContract;
 import com.test.votting.vottingtest.SolCode.Voters;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.Web3jFactory;
@@ -27,8 +36,11 @@ import java.util.Locale;
 
 public class HelperCLass
 {
-    public static PowerManager.WakeLock mWakeLock;
+    public static String urlIPFSArabic="https://ipfs.io/ipfs/QmdadT2nVvWLxJeytJMEUaHugqqmuVn2YZ6tZYDh8TGmf7";
+    public static String urlIPFSEnglish="https://ipfs.io/ipfs/QmNrVwBRMzHWUBVZUzDhc35LUyh9zcBhFb4UFiaYUSUPDo";
 
+    public static PowerManager.WakeLock mWakeLock;
+    public static RequestQueue requestQueue;
     public static   String fromTime,toTime,fromDate;
 
     public static boolean threshouldFlag=false;
@@ -44,14 +56,14 @@ public class HelperCLass
     //https://rinkeby.infura.io/v3/203f4b27aa6a41c6958b6c8ff6f4d729
     public static Web3j   web3 = Web3jFactory.build(new HttpService("https://rinkeby.infura.io/v3/203f4b27aa6a41c6958b6c8ff6f4d729"));// defaults to http://localhost:8545/
     public static String privateKey="4274b048585600a5732d24d055e5ca2ed6df5311b895d4ed6c1aea0019881021"
-            ,mainAddress="0xd97fc36cc01e0c6a6421418646c5da807608acb1"
-            ,voterAddress="0xaee03090c6490b53a0a09bcad5ec4ca7fd46b577"
-            ,judgmentAddress="0x17680fcc3bb7a75fe4787c51fb55de4b0bf5070b"
-            ,candidateAddress="0x670240b4ecce35b8aec1c0b17c99eaa42eb5a237";
+            ,mainAddress="0xf21fe27e0721423577c46cd649970a15358a9726"
+            ,voterAddress="0xd1dcbeb004033102e5d3b5ba78f6cf75d0fe2590"
+            ,judgmentAddress="0x46b4468a764349f3b37147e0675bc5dcbd234671"
+            ,candidateAddress="0xdb6cc19deb7abb73d062a328512e95659f306da9";
     public static Credentials credentials = Credentials.create(privateKey);
-
     public static ArrayList<SetGetMyVotes> arrayListMyVotes =new ArrayList<>();
     public static ArrayList<SetGetCandidatesInformations>arrayList=new ArrayList<>();
+    public static ArrayList<String> arrayListSpinnerCities=new ArrayList<>();
 
     public static Voters voters;
     public static Judgment judgment=null;
@@ -63,6 +75,8 @@ public class HelperCLass
        public HelperCLass(Activity act)
        {
            activity=act;
+           requestQueue= Volley.newRequestQueue(act);
+
        }
     public SharedPreferences getSharedPreferences()
     {
@@ -98,10 +112,9 @@ public class HelperCLass
         this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
         this.mWakeLock.acquire();
     }
-    public void getLanguage()
+    public void getLanguage(String lang)
     {
-        String languageToLoad  = "en"; // your language
-        Locale locale = new Locale(languageToLoad);
+        Locale locale = new Locale(lang);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
         config.locale = locale;
@@ -114,5 +127,6 @@ public class HelperCLass
 
         return credentials;
     }
+
 
 }

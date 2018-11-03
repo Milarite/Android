@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_margin="5dp"
-    android:background="@color/whiteColor"
+    android:background="@color/blueGrayColor"
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="2dp"
         android:src="@drawable/user"
+        app:civ_circle_background_color="@color/whiteColor"
         android:id="@+id/candidateImage"
         />
     <LinearLayout
@@ -45,9 +46,11 @@
             android:layout_height="wrap_content"
             android:lineSpacingMultiplier="1.5"
             android:id="@+id/candidateCampign"
-            android:textColor="@color/blueGrayColor"
+            android:textColor="@color/colorAccent"
             android:textSize="13dp"
-            android:text="خير الناس انفعهم للناس ، الوطن للجميع والجميع للوطن ، القضية الفلسطينية اولوية ،وباسمكم نتكلم ومن اجلكم نعمل ، بصوتك يبدأ التغيير"/>
+            android:gravity="right"
+            android:text="خير الناس انفعهم للناس ، الوطن للجميع والجميع للوطن ، القضية الفلسطينية اولوية ،وباسمكم نتكلم ومن اجلكم نعمل ، بصوتك يبدأ التغيير"
+            />
        <LinearLayout
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
@@ -58,9 +61,9 @@
                android:layout_width="wrap_content"
                android:layout_weight="1"
                android:layout_height="wrap_content"
-               android:textStyle="bold"
                android:id="@+id/city"
                android:textSize="16dp"
+               android:textStyle="bold"
                android:text="Amman"/>
            <TextView
                android:layout_width="wrap_content"
@@ -75,7 +78,6 @@
                android:layout_width="wrap_content"
                android:layout_weight="1"
                android:layout_height="wrap_content"
-               android:textStyle="bold"
                android:id="@+id/status"
                android:textSize="16dp"
                android:gravity="right"
@@ -86,8 +88,8 @@
 
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:id="@+id/delete"
         android:src="@drawable/delete"
         android:layout_gravity="center_vertical"/>

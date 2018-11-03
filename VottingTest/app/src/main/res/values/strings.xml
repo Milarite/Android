@@ -3,6 +3,61 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
+    <string name="SIGNUP">SIGN-UP</string>
+    <string name="SIGNIN">SIGN-IN</string>
+    <string name="Vote">Vote</string>
+    <string name="No">No</string>
+    <string name="Yes">Yes</string>
+    <string name="NationalID">National ID</string>
+    <string name="VoterName">Name</string>
+    <string name="Birthofdate">Birth of date</string>
+    <string name="City">City</string>
+    <string name="Year">Year</string>
+    <string name="SIGNOUT">SIGN-OUT</string>
+    <string name="Password">Password</string>
+    <string name="MyVotes">MyVotes</string>
+    <string name="Home">Home</string>
+    <string name="Profile">Profile</string>
+    <string name="Win">Win</string>
+    <string name="Pending">Pending</string>
+    <string name="Lang">عربي</string>
+
+    <string name="Lose">Lose</string>
+    <string name="Voting">Voting</string>
+
+
+    <string name="TimeOut">Time out</string>
+    <string name="Successful">Successful</string>
+    <string name="Youhavebeenvoted">You have been voted</string>
+    <string name="Close">Close</string>
+    <string name="Revokevote">Revoke vote</string>
+    <string name="Areyousureyouwanttorevokeyourvotefrom">Are you sure revoke your vote from </string>
+    <string name="Pleasewait">Please wait</string>
+    <string name="Revoking">Revoking</string>
+    <string name="Nointernetconnection">No internet connection</string>
+
+
+    <string name="Signin">Signin</string>
+    <string name="NationalIDisrequired">NationalID is required</string>
+    <string name="Passwordisrequired">Password is required</string>
+    <string name="LoginFailed">Login Failed</string>
+
+
+    <string name="Nameisrequired">Name is required</string>
+    <string name="Birthofdateisrequired">Birth of date is required</string>
+    <string name="Yearisrequired">Year is required</string>
+    <string name="Signup">Signup</string>
+    <string name="Thisnationalidisexist">This national id is exist</string>
+
+
+
+
+    <string name="Areyousureyouwanttovoteto">Are you sure you want to vote to</string>
+    <string name="LoadCites">Load the cities</string>
+    <string name="Nointernetconnectionpleasereloadthecities">No internet connection please reload the cities</string>
+    <string name="Reload">Reload</string>
+
+
     <string name="title_notifications">Notifications</string>
 
     <!-- TODO: Remove or change this placeholder text -->

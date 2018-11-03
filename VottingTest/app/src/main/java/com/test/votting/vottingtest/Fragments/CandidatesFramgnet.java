@@ -23,6 +23,7 @@ import com.test.votting.vottingtest.R;
 import org.json.JSONObject;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.UUID;
 
 
@@ -87,7 +88,7 @@ public class CandidatesFramgnet extends Fragment {
                     longOperation.execute("");
                 }
                 else {
-                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),getActivity().getResources().getString(R.string.Nointernetconnection), Toast.LENGTH_SHORT).show();
                     swipeContainer.setRefreshing(false);
                 }
             }
@@ -107,11 +108,12 @@ public class CandidatesFramgnet extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if(HelperCLass.arrayList !=null)
-                HelperCLass.arrayList.clear();
+
             if(!swipeContainer.isRefreshing())
                 swipeContainer.setRefreshing(true);
+            HelperCLass.arrayList.clear();
             adapterCandidatesRecyclerview.notifyDataSetChanged();
+
         }
 
         @Override
@@ -125,6 +127,7 @@ public class CandidatesFramgnet extends Fragment {
         @Override
         protected String doInBackground(String... params) {
 
+            HelperCLass.arrayList.clear();
 
 
 
@@ -187,16 +190,14 @@ public class CandidatesFramgnet extends Fragment {
 
 
         }
-    }
 
+    }
 
     @Override
     public void onPause() {
         super.onPause();
-        if(longOperation !=null)
-        longOperation.cancel(true);
+
+            if (longOperation != null && longOperation.getStatus() != AsyncTask.Status.FINISHED)
+                longOperation.cancel(true);
     }
-
-
-
 }

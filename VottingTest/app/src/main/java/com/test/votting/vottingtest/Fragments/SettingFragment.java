@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,15 @@ public class SettingFragment extends Fragment {
         voterName.setText(HelperCLass.myName);
         nationalID.setText(helperCLass.getSharedPreferences().getString("nationalID",""));
 
+        if(helperCLass.getSharedPreferences().getString("Lang","").equals("ar"))
+        {
+            nationalID.setGravity(Gravity.LEFT);
+            voterName.setGravity(Gravity.LEFT);
+            birthOfDate.setGravity(Gravity.LEFT);
+            city.setGravity(Gravity.LEFT);
+            year.setGravity(Gravity.LEFT);
+
+        }
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

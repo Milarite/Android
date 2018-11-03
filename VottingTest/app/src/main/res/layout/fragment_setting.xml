@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:clickable="true"
-    android:background="@color/whiteColor"
+    android:background="@color/blackColor"
     android:layout_height="match_parent"
     tools:context=".Fragments.SettingFragment">
 
@@ -13,9 +14,13 @@
         android:layout_height="70dp"
         android:layout_gravity="center"
         android:layout_margin="20dp"
+        app:civ_circle_background_color="@color/whiteColor"
         android:src="@drawable/user"/>
 
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/blueColor"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,8 +28,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="National ID"
+            android:text="@string/NationalID"
             android:textStyle="bold"
+            android:textColor="@color/greenColor"
             android:padding="10dp"/>
 
 
@@ -34,6 +40,7 @@
             android:layout_height="wrap_content"
             android:gravity="right"
             android:id="@+id/nationalID"
+            android:textColor="@color/blueGrayColor"
             android:padding="10dp"/>
 
     </LinearLayout>
@@ -41,7 +48,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/blueColor"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,7 +56,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Voter Name"
+            android:text="@string/VoterName"
+            android:textColor="@color/greenColor"
             android:textStyle="bold"
             android:padding="10dp"/>
 
@@ -59,6 +67,8 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="right"
+            android:textColor="@color/blueGrayColor"
+
             android:id="@+id/voterName"
             android:padding="10dp" />
 
@@ -75,7 +85,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/blueColor"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -83,8 +93,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Birth of date"
+            android:text="@string/Birthofdate"
             android:textStyle="bold"
+            android:textColor="@color/greenColor"
             android:padding="10dp"/>
 
 
@@ -94,6 +105,8 @@
             android:layout_height="wrap_content"
             android:gravity="right"
             android:id="@+id/birthOfDate"
+            android:textColor="@color/blueGrayColor"
+
             android:padding="10dp" />
 
     </LinearLayout>
@@ -107,7 +120,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/blueColor"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -115,7 +128,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="City"
+            android:text="@string/City"
+            android:textColor="@color/greenColor"
+
             android:textStyle="bold"
             android:padding="10dp"/>
 
@@ -125,6 +140,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="right"
+            android:textColor="@color/blueGrayColor"
             android:id="@+id/city"
             android:padding="10dp" />
 
@@ -137,11 +153,10 @@
 
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/blueColor"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -149,7 +164,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Year"
+            android:text="@string/Year"
+            android:textColor="@color/greenColor"
             android:textStyle="bold"
             android:padding="10dp"/>
 
@@ -160,13 +176,14 @@
             android:layout_height="wrap_content"
             android:gravity="right"
             android:id="@+id/year"
+            android:textColor="@color/blueGrayColor"
             android:padding="10dp" />
 
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/blueColor"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -175,8 +192,8 @@
         android:id="@+id/signOut"
         android:padding="15dp"
         android:layout_gravity="center"
-        android:background="@color/redColor"
+        android:background="@drawable/vote_text"
         android:textColor="@color/whiteColor"
         android:layout_margin="40dp"
-        android:text="SIGN-OUT"/>
+        android:text="@string/SIGNOUT"/>
 </LinearLayout>

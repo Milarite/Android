@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blackColor"
+
     android:orientation="vertical"
     tools:context=".RegistrationActivity">
     <TextView
@@ -20,40 +22,56 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:layout_weight="1"
-        android:id="@+id/linearRegitration">
+        android:id="@+id/linearRegitration"/>
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_margin="10dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="10dp"
-            android:textSize="16dp"
-            android:textColor="#ffffff"
-            android:background="@color/blueGrayColor"
 
-            android:onClick="signinFunc"
-            android:text="SIGN-IN"/>
+
         <LinearLayout
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="#ffffff"/>
-        <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="10dp"
-            android:onClick="signupFunc"
-            android:textSize="16dp"
-            android:textColor="#ffffff"
-            android:background="@color/blueColor"
-            android:text="SIGN-UP"/>
+            android:layout_margin="5dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Lang"
+                android:layout_margin="10dp"
+                android:textSize="20dp"
+                android:id="@+id/language"
+                android:gravity="center"
+                android:textColor="@color/colorAccent"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:textSize="16dp"
+                    android:textColor="#ffffff"
+                    android:background="@color/blueGrayColor"
+                    android:onClick="signinFunc"
+                    android:text="@string/SIGNIN"/>
+                <LinearLayout
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="#ffffff"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:onClick="signupFunc"
+                    android:textSize="16dp"
+                    android:textColor="#ffffff"
+                    android:background="@color/blueColor"
+                    android:text="@string/SIGNUP"/>
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
 
-</LinearLayout>
