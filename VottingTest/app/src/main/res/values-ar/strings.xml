@@ -25,8 +25,9 @@
     <string name="Pending">قيد الانتظار</string>
     <string name="Lang">English</string>
     <string name="Lose">لم ينجح</string>
+    <string name="Voting">تصويت</string>
     <string name="TimeOut">نفذ الوقت</string>
-    <string name="Successful">مت العمليه بنجاح</string>
+    <string name="Successful">تمت العمليه بنجاح</string>
     <string name="Youhavebeenvoted">لقد تم التصويت</string>
     <string name="Close">اغلاق</string>
     <string name="Revokevote">سحب الصوت</string>

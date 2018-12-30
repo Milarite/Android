@@ -64,7 +64,6 @@ public class HelperCLass
     public static ArrayList<SetGetMyVotes> arrayListMyVotes =new ArrayList<>();
     public static ArrayList<SetGetCandidatesInformations>arrayList=new ArrayList<>();
     public static ArrayList<String> arrayListSpinnerCities=new ArrayList<>();
-
     public static Voters voters;
     public static Judgment judgment=null;
     public static Candidates candidates=null;

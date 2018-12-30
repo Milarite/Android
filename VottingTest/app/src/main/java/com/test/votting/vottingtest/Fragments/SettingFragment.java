@@ -59,6 +59,9 @@ public class SettingFragment extends Fragment {
             year.setGravity(Gravity.LEFT);
 
         }
+
+
+
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,4 +73,7 @@ public class SettingFragment extends Fragment {
 
         return v;
     }
+//    public void setText(TextView ... txt){
+//        txt.setGravity(Gravity.LEFT);
+//    }
 }

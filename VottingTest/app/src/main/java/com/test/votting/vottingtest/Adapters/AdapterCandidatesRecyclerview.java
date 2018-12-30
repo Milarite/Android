@@ -33,7 +33,6 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<AdapterCandidatesRecyclerview.MyRec> {
-    String xx1,xx2;
     long unixSecondsDateTime;
     boolean checkDateTimeAvailable;
     AlertDialog alertDialog;
@@ -47,6 +46,7 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
     String grantVoteStauts;
     String transactionHash;
     ProgressDialog progressDialog;
+   // public AdapterCallbBack adapterCallbBack;
 
     public AdapterCandidatesRecyclerview(ArrayList<SetGetCandidatesInformations> list, Activity context) {
         arrayList = list;
@@ -258,6 +258,7 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
 
             LongOperationSendTxHashVoter longOperationSentTxHash = new LongOperationSendTxHashVoter();
             longOperationSentTxHash.execute("");
+         //   adapterCallbBack.cellAction();
         }
 
         @Override
@@ -351,5 +352,9 @@ public class AdapterCandidatesRecyclerview  extends RecyclerView.Adapter<Adapter
 
 
         }
+
+//        interface AdapterCallbBack{
+//        void cellAction();
+//        }
 }
 

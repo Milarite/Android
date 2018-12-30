@@ -30,7 +30,7 @@ import java.util.UUID;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CandidatesFramgnet extends Fragment {
+public class CandidatesFramgnet extends Fragment  {
     SwipeRefreshLayout swipeContainer;
     LongOperation longOperation;
    // String startDate;
@@ -40,6 +40,7 @@ public class CandidatesFramgnet extends Fragment {
     StaggeredGridLayoutManager gridLayoutManager;
     AdapterCandidatesRecyclerview adapterCandidatesRecyclerview;
     HelperCLass helperCLass;
+
 
     public CandidatesFramgnet() {
         // Required empty public constructor
